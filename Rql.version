@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Version>
   <Files>
-    <File>Rql/PropertyInfo/AssemblyVersion.cs</File>
+    <File>Rql/Properties/AssemblyInfo.cs</File>
+    <File>scratch/Rql.version.txt</File>
   </Files>
   <Major>1</Major>
   <Minor>0</Minor>
   <Build>10805</Build>
-  <Revision>0</Revision>
+  <Revision>5</Revision>
   <StartYear>2013</StartYear>
 </Version>

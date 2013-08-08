@@ -57,6 +57,14 @@ namespace Rql
                 return false;
             }
         }
+
+        public static string GetUtcOffsetForTimeZone(string timeZoneId)
+        {
+            var tzi = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+            TimeSpan utcOffset = tzi.GetUtcOffset(DateTime.Now);
+            int hours = utcOffset.Hours;
+            return Math.Sign(hours) >= 0 ? "+" : "-" + Math.Abs(hours).ToString("00") + utcOffset.Minutes.ToString("00");
+        }
     }
 }
 

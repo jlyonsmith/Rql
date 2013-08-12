@@ -22,7 +22,20 @@ namespace Rql
 
         public override string ToString()
         {
-            return "@" + this.dateTime.ToString(FormatPattern);
+            return ToString("@");
+        }
+
+        public string ToString(string format)
+        {
+            switch (format)
+            {
+                case "@":
+                    return "@" + this.dateTime.ToString(FormatPattern);
+                case "n":
+                    return this.dateTime.ToString(FormatPattern);
+                default:
+                    return this.dateTime.ToString(format);
+            }
         }
 
         public static explicit operator DateTime(RqlDateTime other)

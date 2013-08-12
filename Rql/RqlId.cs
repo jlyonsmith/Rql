@@ -4,6 +4,7 @@ namespace Rql
 {
     public sealed class RqlId
     {
+        // TODO: Make this "object" instead of string?
         private string id;
 
         private RqlId()
@@ -22,12 +23,20 @@ namespace Rql
 
         public override string ToString()
         {
-            return "$" + id;
+            return ToString("$");
         }
 
-        public static explicit operator String(RqlId other)
+        public string ToString(string format)
         {
-            return other.id;
+            switch (format)
+            {
+                case "$":
+                    return "$" + id;
+                case "n":
+                    return id;
+                default:
+                    throw new FormatException("Format should be '$' or 'n'");
+            }
         }
 
         public override bool Equals(object obj)

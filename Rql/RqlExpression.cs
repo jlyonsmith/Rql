@@ -32,9 +32,9 @@ namespace Rql
             return new RqlConstantExpression(token);
         }
 
-        public static RqlConstantExpression Constant(RqlToken tokens, List<object> data)
+        public static RqlConstantExpression Constant(RqlToken tokens, object[] tuple)
         {
-            return new RqlConstantExpression(tokens, data);
+            return new RqlConstantExpression(tokens, tuple);
         }
 
         public static RqlFunctionCallExpression FunctionCall(RqlToken token, IList<RqlExpression> arguments)
@@ -58,7 +58,7 @@ namespace Rql
 
     public class RqlConstantExpression : RqlExpression
     {
-        private object data;
+        private object[] tuple;
 
         public RqlConstantExpression(RqlToken token) : base(RqlExpressionType.Constant)
         {
@@ -68,14 +68,19 @@ namespace Rql
             this.Token = token;
         }
 
-        public RqlConstantExpression(RqlToken token, List<object> data) : base(RqlExpressionType.Constant)
+        public RqlConstantExpression(RqlToken token, object[] tuple) : base(RqlExpressionType.Constant)
         {
             this.Token = token;
-            this.data = data;
+
+            if (tuple.Length == 0)
+                throw new RqlParseException(token, "Empty tuple not allowed");
+
+            this.tuple = tuple;
         }
 
+        public Type TupleType { get { return tuple != null ? tuple[0].GetType() : null; } }
         public Type Type { get { return Value.GetType(); } }
-        public object Value { get { return data ?? Token.Data; } }
+        public object Value { get { return tuple ?? Token.Data; } }
     }
 
     public class RqlFunctionCallExpression : RqlExpression

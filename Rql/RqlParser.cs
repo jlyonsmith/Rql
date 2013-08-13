@@ -117,7 +117,7 @@ namespace Rql
                     throw new RqlParseException(token);
             }
 
-            return RqlConstantExpression.Constant(leftParenToken, tuple);
+            return RqlConstantExpression.Constant(leftParenToken, tuple.ToArray());
         }
     }
 }

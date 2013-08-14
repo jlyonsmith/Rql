@@ -22,7 +22,20 @@ namespace Rql
 
         public override string ToString()
         {
-            return "@" + this.dateTime.ToString(FormatPattern);
+            return ToString("@");
+        }
+
+        public string ToString(string format)
+        {
+            switch (format)
+            {
+                case "@":
+                    return "@" + this.dateTime.ToString(FormatPattern);
+                case "n":
+                    return this.dateTime.ToString(FormatPattern);
+                default:
+                    return this.dateTime.ToString(format);
+            }
         }
 
         public static explicit operator DateTime(RqlDateTime other)
@@ -56,6 +69,14 @@ namespace Rql
                 dateTime = Zero;
                 return false;
             }
+        }
+
+        public static string GetUtcOffsetForTimeZone(string timeZoneId)
+        {
+            var tzi = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+            TimeSpan utcOffset = tzi.GetUtcOffset(DateTime.Now);
+            int hours = utcOffset.Hours;
+            return Math.Sign(hours) >= 0 ? "+" : "-" + Math.Abs(hours).ToString("00") + utcOffset.Minutes.ToString("00");
         }
     }
 }

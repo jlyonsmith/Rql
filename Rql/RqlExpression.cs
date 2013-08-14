@@ -85,8 +85,7 @@ namespace Rql
             this.Token = token;
         }
 
-        public Type TupleType { get { return tuple != null ? tuple[0].GetType() : null; } }
-        public Type Type { get { return Value.GetType(); } }
+        public Type Type { get { return Value == null ? null : Value.GetType(); } }
         public object Value { get { return Token.Data; } }
     }
 

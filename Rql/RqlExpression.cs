@@ -9,6 +9,7 @@ namespace Rql
     {
         Identifier,
         Constant,
+        Tuple,
         FunctionCall
     }
 
@@ -32,9 +33,9 @@ namespace Rql
             return new RqlConstantExpression(token);
         }
 
-        public static RqlConstantExpression Constant(RqlToken tokens, List<object> data)
+        public static RqlTupleExpression Tuple(RqlToken token, IList<RqlConstantExpression> constants)
         {
-            return new RqlConstantExpression(tokens, data);
+            return new RqlTupleExpression(token, constants);
         }
 
         public static RqlFunctionCallExpression FunctionCall(RqlToken token, IList<RqlExpression> arguments)
@@ -56,10 +57,26 @@ namespace Rql
         public string Name { get { return (string)Token.Data; } }
     }
 
+    public class RqlTupleExpression : RqlExpression
+    {
+        public RqlTupleExpression(RqlToken token) : this(token, new RqlConstantExpression[0])
+        {
+        }
+
+        public RqlTupleExpression(RqlToken token, IList<RqlConstantExpression> constants) : base(RqlExpressionType.Tuple)
+        {
+            if (!token.IsLeftParen)
+                throw new RqlParseException(token);
+
+            this.Token = token;
+            this.Constants = new ReadOnlyCollection<RqlConstantExpression>(constants);
+        }
+
+        public ReadOnlyCollection<RqlConstantExpression> Constants { get; private set; }
+    }
+
     public class RqlConstantExpression : RqlExpression
     {
-        private object data;
-
         public RqlConstantExpression(RqlToken token) : base(RqlExpressionType.Constant)
         {
             if (!token.IsConstant)
@@ -68,14 +85,8 @@ namespace Rql
             this.Token = token;
         }
 
-        public RqlConstantExpression(RqlToken token, List<object> data) : base(RqlExpressionType.Constant)
-        {
-            this.Token = token;
-            this.data = data;
-        }
-
         public Type Type { get { return Value.GetType(); } }
-        public object Value { get { return data ?? Token.Data; } }
+        public object Value { get { return Token.Data; } }
     }
 
     public class RqlFunctionCallExpression : RqlExpression

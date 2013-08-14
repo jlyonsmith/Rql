@@ -46,25 +46,24 @@ namespace Rql.Tests
 
         protected override RqlExpression VisitConstant(RqlConstantExpression node)
         {
-            if (node.Type == typeof(List<object>))
+            s += FormatSimpleConstant(node.Type, node.Value);
+
+            return node;
+        }
+
+        protected override RqlExpression VisitTuple(RqlTupleExpression node)
+        {
+            var list = node.Constants;
+
+            s += "(";
+
+            for (int i = 0; i < list.Count; i++)
             {
-                var list = (List<object>)node.Value;
-
-                s += "(";
-
-                for (int i = 0; i < list.Count; i++)
-                {
-                    object data = list[i];
-
-                    s += FormatSimpleConstant(data.GetType(), data) + (i < list.Count - 1 ? "," : "");
-                }
-
-                s += ")";
+                VisitConstant(list[i]);
+                s += (i < list.Count - 1 ? "," : "");
             }
-            else
-            {
-                s += FormatSimpleConstant(node.Type, node.Value);
-            }
+
+            s += ")";
 
             return node;
         }

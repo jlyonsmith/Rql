@@ -86,9 +86,9 @@ namespace Rql
             return RqlExpression.FunctionCall(functionToken, arguments);
         }
 
-        private RqlConstantExpression ParseTuple(RqlToken leftParenToken)
+        private RqlTupleExpression ParseTuple(RqlToken leftParenToken)
         {
-            var tuple = new List<object>();
+            var constants = new List<RqlConstantExpression>();
             Type itemType = null;
 
             while (true)
@@ -102,7 +102,7 @@ namespace Rql
                     else if (token.Data.GetType() != itemType)
                         throw new RqlParseException(token, "Tuple items must all be of the same type");
 
-                    tuple.Add(token.Data);
+                    constants.Add(RqlExpression.Constant(token));
                 }
                 else
                     throw new RqlParseException(token);
@@ -117,7 +117,7 @@ namespace Rql
                     throw new RqlParseException(token);
             }
 
-            return RqlConstantExpression.Constant(leftParenToken, tuple);
+            return RqlExpression.Tuple(leftParenToken, constants);
         }
     }
 }

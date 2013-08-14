@@ -23,6 +23,8 @@ namespace Rql
                 return this.VisitIdentifier((RqlIdentifierExpression)node);
             case RqlExpressionType.FunctionCall:
                 return this.VisitFunctionCall((RqlFunctionCallExpression)node);
+            case RqlExpressionType.Tuple:
+                return this.VisitTuple((RqlTupleExpression)node);
             default:
                 throw new NotImplementedException();
             }
@@ -42,7 +44,12 @@ namespace Rql
         {
             return node;
         }
-        
+
+        protected virtual RqlExpression VisitTuple(RqlTupleExpression node)
+        {
+            return node;
+        }
+
         protected virtual RqlExpression VisitIdentifier(RqlIdentifierExpression node)
         {
             return node;

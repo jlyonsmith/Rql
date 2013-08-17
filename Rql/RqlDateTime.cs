@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Rql
 {
-    public struct RqlDateTime
+    public struct RqlDateTime : IFormattable
     {
         private DateTime dateTime;
 
@@ -20,22 +20,47 @@ namespace Rql
             InternalParse(s);
         }
 
+        #region IFormattable implementation
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            if (formatProvider != null)
+            {
+                ICustomFormatter formatter = formatProvider.GetFormat(this.GetType()) as ICustomFormatter;
+
+                if (formatter != null)
+                    return formatter.Format(format, this, formatProvider);
+            }
+
+            if (format == null) 
+                format = "G";
+
+            switch (format)
+            {
+                case "n":
+                    return this.dateTime.ToString(FormatPattern);
+                case "@":
+                case "G":
+                default:
+                    return "@" + this.dateTime.ToString(FormatPattern);
+            }
+        }
+
+        #endregion
+
         public override string ToString()
         {
-            return ToString("@");
+            return ToString(null, null);
         }
 
         public string ToString(string format)
         {
-            switch (format)
-            {
-                case "@":
-                    return "@" + this.dateTime.ToString(FormatPattern);
-                case "n":
-                    return this.dateTime.ToString(FormatPattern);
-                default:
-                    return this.dateTime.ToString(format);
-            }
+            return ToString(format, null);
+        }
+
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return ToString(null, formatProvider);
         }
 
         public static explicit operator DateTime(RqlDateTime other)

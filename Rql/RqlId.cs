@@ -2,9 +2,8 @@ using System;
 
 namespace Rql
 {
-    public sealed class RqlId
+    public sealed class RqlId : IFormattable
     {
-        // TODO: Make this "object" instead of string?
         private string id;
 
         private RqlId()
@@ -21,22 +20,47 @@ namespace Rql
             this.id = other.id;
         }
 
+        #region IFormattable implementation
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            if (formatProvider != null)
+            {
+                ICustomFormatter formatter = formatProvider.GetFormat(this.GetType()) as ICustomFormatter;
+
+                if (formatter != null)
+                    return formatter.Format(format, this, formatProvider);
+            }
+
+            if (format == null) 
+                format = "G";
+
+            switch (format)
+            {
+                case "n":
+                    return id.Substring(1);
+                case "$":
+                case "G":
+                default:
+                    return id;
+            }
+        }
+
+        #endregion
+
         public override string ToString()
         {
-            return ToString("$");
+            return ToString("G", null);
         }
 
         public string ToString(string format)
         {
-            switch (format)
-            {
-                case "$":
-                    return "$" + id;
-                case "n":
-                    return id;
-                default:
-                    throw new FormatException("Format should be '$' or 'n'");
-            }
+            return ToString(format, null);
+        }
+
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return ToString(null, formatProvider);
         }
 
         public override bool Equals(object obj)
@@ -54,10 +78,10 @@ namespace Rql
 
         private void InternalParse(string s)
         {
-            if (s.StartsWith("$"))
-                s = s.Substring(1);
-
-            this.id = s;
+            if (!s.StartsWith("$"))
+                this.id = "$" + s;
+            else
+                this.id = s;
         }
         
         public static RqlId Parse(string s)

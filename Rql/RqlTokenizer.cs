@@ -125,9 +125,22 @@ namespace Rql
 
                 c = ReadChar();
 
-                while (c != 0 && Char.IsLetterOrDigit(c))
+                bool lastCharWasDot = false;
+
+                while (c != 0 && (Char.IsLetterOrDigit(c)) || c == '.')
                 {
                     sb.Append(c);
+
+                    if (c == '.')
+                    {
+                        if (lastCharWasDot)
+                            goto Error;
+
+                        lastCharWasDot = true;
+                    }
+                    else
+                        lastCharWasDot = false;
+
                     c = ReadChar();
                 }
 

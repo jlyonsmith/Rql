@@ -19,6 +19,18 @@ namespace Rql
         End
     }
 
+    public enum RqlDataType
+    {
+        None = 0,
+        Boolean,
+        Integer,
+        Double,
+        String,
+        Id,
+        DateTime,
+        Tuple
+    }
+
     public class RqlToken
     {
         public RqlToken(RqlTokenType tokenType, int offset)

@@ -28,7 +28,7 @@ namespace Rql
         String,
         Id,
         DateTime,
-        Tuple
+        Document
     }
 
     public class RqlToken

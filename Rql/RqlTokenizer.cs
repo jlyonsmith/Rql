@@ -28,6 +28,7 @@ namespace Rql
         String,
         Id,
         DateTime,
+        Tuple,
         Document
     }
 

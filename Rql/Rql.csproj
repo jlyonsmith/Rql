@@ -43,7 +43,7 @@
     <Compile Include="SortSpec.cs" />
     <Compile Include="SortSpecParser.cs" />
     <Compile Include="RqlNameAttribute.cs" />
-    <Compile Include="IRqlCollection.cs" />
+    <Compile Include="IDbCollection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,11 +8,10 @@ namespace Rql
         private DateTime dateTime;
 
         public static readonly string FormatPattern = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
-        public static readonly RqlDateTime Zero = new RqlDateTime(DateTime.MinValue);
 
         public RqlDateTime(DateTime dateTime) : this()
         {
-            if (this.dateTime.Kind != DateTimeKind.Utc)
+            if (dateTime.Kind != DateTimeKind.Utc)
                 throw new ArgumentException("Argument must be a UTC time");
 
             this.dateTime = dateTime;
@@ -94,7 +93,7 @@ namespace Rql
             }
             catch (Exception)
             {
-                dateTime = Zero;
+                dateTime = new RqlDateTime(new DateTime(0, DateTimeKind.Utc));
                 return false;
             }
         }

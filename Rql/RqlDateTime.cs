@@ -12,6 +12,9 @@ namespace Rql
 
         public RqlDateTime(DateTime dateTime) : this()
         {
+            if (this.dateTime.Kind != DateTimeKind.Utc)
+                throw new ArgumentException("Argument must be a UTC time");
+
             this.dateTime = dateTime;
         }
         

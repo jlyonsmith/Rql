@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -44,6 +45,10 @@
     <Compile Include="SortSpecParser.cs" />
     <Compile Include="RqlNameAttribute.cs" />
     <Compile Include="IRqlCollection.cs" />
+    <Compile Include="RqlNamespace.cs" />
+    <Compile Include="IRqlNamespace.cs" />
+    <Compile Include="RqlCollectionInfo.cs" />
+    <Compile Include="RqlFieldInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

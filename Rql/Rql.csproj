@@ -49,6 +49,7 @@
     <Compile Include="IRqlNamespace.cs" />
     <Compile Include="RqlCollectionInfo.cs" />
     <Compile Include="RqlFieldInfo.cs" />
+    <Compile Include="IRqlDocument.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

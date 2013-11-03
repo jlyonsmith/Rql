@@ -5,6 +5,7 @@ Scratch/
 Debug/
 Release/
 Scratch/
+packages/
 
 *.suo
 *.user

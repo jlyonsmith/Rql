@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3CE72725-6775-4918-98A4-12BD3D660670}</ProjectGuid>
+    <ProjectGuid>{E09CAA07-E704-4DFA-B18C-E21D3715249B}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>RqlTests</RootNamespace>
-    <AssemblyName>RqlTests</AssemblyName>
+    <RootNamespace>Rql.MongoDB</RootNamespace>
+    <AssemblyName>Rql.MongoDB</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -37,25 +37,17 @@
     <Reference Include="MongoDB.Driver">
       <HintPath>..\packages\mongocsharpdriver.1.8.3\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RqlMongoNamespace.cs" />
+    <Compile Include="RqlToMongoQueryCompiler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Compile Include="RqlParserTests.cs" />
-    <Compile Include="RqlTokenizerTests.cs" />
-    <Compile Include="RqlMongoNamespaceTests.cs" />
-    <Compile Include="RqlToMongoQueryCompilerTests.cs" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Rql.MongoDB\Rql.MongoDB.csproj">
-      <Project>{E09CAA07-E704-4DFA-B18C-E21D3715249B}</Project>
-      <Name>Rql.MongoDB</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Rql\Rql.csproj">
       <Project>{B58DFA71-AB06-43DA-92AC-A1AC2D69C5DD}</Project>
       <Name>Rql</Name>

@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rql", "Rql\Rql.csproj", "{B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RqlTests", "Tests\RqlTests.csproj", "{3CE72725-6775-4918-98A4-12BD3D660670}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rql.MongoDB", "Rql.MongoDB\Rql.MongoDB.csproj", "{E09CAA07-E704-4DFA-B18C-E21D3715249B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{B58DFA71-AB06-43DA-92AC-A1AC2D69C5DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B58DFA71-AB06-43DA-92AC-A1AC2D69C5DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B58DFA71-AB06-43DA-92AC-A1AC2D69C5DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E09CAA07-E704-4DFA-B18C-E21D3715249B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E09CAA07-E704-4DFA-B18C-E21D3715249B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E09CAA07-E704-4DFA-B18C-E21D3715249B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E09CAA07-E704-4DFA-B18C-E21D3715249B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Rql\Rql.csproj

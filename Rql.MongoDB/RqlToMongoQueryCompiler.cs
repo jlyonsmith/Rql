@@ -230,35 +230,50 @@ namespace Rql.MongoDB
             return node;
         }
 
-        private RqlExpression VisitOperatorWhere(RqlFunctionCallExpression node)
+        private RqlExpression VisitOperatorInquery(RqlFunctionCallExpression node)
         {
-            if (node.Arguments.Count != 2)
-                ThrowError(node, "{0} takes exactly two arguments", node.Name);
+            if (node.Arguments.Count != 3)
+                ThrowError(node, "{0} takes three arguments", node.Name);
             
-            RqlIdentifierExpression identifier = node.Arguments[0] as RqlIdentifierExpression;
+            RqlIdentifierExpression fieldIdentifier = node.Arguments[0] as RqlIdentifierExpression;
 
-            if (identifier == null)
-                ThrowError(identifier, "First argument must be a field identifier");
+            if (fieldIdentifier == null)
+                ThrowError(fieldIdentifier, "First argument must be an identifier");
 
-            RqlCollectionInfo idsCollectionInfo = this.collectionInfo.RqlNamespace.GetCollectionInfo(identifier.Name);
+            RqlIdentifierExpression resIdentifier = node.Arguments[1] as RqlIdentifierExpression;
+
+            if (resIdentifier == null)
+                ThrowError(resIdentifier, "Second argument must be an identifier");
+
+            RqlCollectionInfo idsCollectionInfo = this.collectionInfo.RqlNamespace.GetCollectionInfo(resIdentifier.Name);
 
             if (idsCollectionInfo == null)
-                ThrowError(identifier, "First argument is not a valid resource identifier");
+                ThrowError(fieldIdentifier, "Second argument is not a valid resource collection");
 
-            RqlExpression expression = node.Arguments[1];
+            RqlExpression expression = node.Arguments[2];
             IEnumerable<ObjectId> ids = new ObjectId[0];
 
             if (idsQueryCompiler != null)
                 ids = idsQueryCompiler(idsCollectionInfo, expression);
 
-            VisitTuple(RqlExpression.Tuple(
+            sb.Append("{");
+
+            RqlFieldInfo fieldInfo = GetFieldInfo(fieldIdentifier.Name);
+
+            VisitIdentifier(fieldIdentifier);
+            sb.Append("{\"$in\": ");
+            lhsFieldTypeStack.Push(fieldInfo.SubRqlType);
+            Visit(RqlExpression.Tuple(
                 RqlToken.LeftParen(node.Token.Offset), 
                 ids.Select<ObjectId, RqlConstantExpression>(id => RqlExpression.Constant(RqlToken.Constant(node.Token.Offset, id))).ToList()));
+            lhsFieldTypeStack.Pop();
+            sb.Append("}");
+            sb.Append("}");
 
             return node;
         }
 
-        private RqlExpression VisitOperatorLike(RqlFunctionCallExpression node)
+        private RqlExpression VisitOperatorLikeLikei(RqlFunctionCallExpression node)
         {
             if (node.Arguments.Count != 2)
                 ThrowError(node, "{0} takes exactly two arguments", node.Name);
@@ -278,14 +293,16 @@ namespace Rql.MongoDB
             if (constant == null || constant.Value.GetType() != typeof(string))
                 ThrowError(node, "Second argument must be a string constant");
 
+            bool ignoreCase = (identifier.Name == "likei");
+
             sb.Append("{");
             VisitIdentifier(identifier);
-            sb.AppendFormat(@"/\b{0}/i", Regex.Escape((string)((RqlConstantExpression)node.Arguments[1]).Value));
+            sb.AppendFormat(@"/\b{0}/{1}", Regex.Escape((string)((RqlConstantExpression)node.Arguments[1]).Value), ignoreCase ? "i" : "");
             sb.Append("}");
             return node;
         }
 
-        private RqlExpression VisitOperatorExists(RqlFunctionCallExpression node)
+        private RqlExpression VisitOperatorExistsNexists(RqlFunctionCallExpression node)
         {
             if (node.Arguments.Count != 1)
                 ThrowError(node, "{0} takes exactly one argument", node.Name);
@@ -295,11 +312,13 @@ namespace Rql.MongoDB
             if (identifier == null)
                 ThrowError(node.Arguments[0], "Argument must be an identifier");
 
+            bool exists = (identifier.Name == "exists");
+
             sb.Append("{");
             VisitIdentifier(identifier);
             sb.Append("{$");
             sb.Append(node.Name);
-            sb.Append(": true }");
+            sb.AppendFormat(": {0} }", exists ? "true" : "false");
             sb.Append("}");
             return node;
         }
@@ -354,13 +373,14 @@ namespace Rql.MongoDB
                 case "and":
                 case "or":
                     return VisitOperatorAndOr(node);
-                case "where":
-                case "ids":
-                    return VisitOperatorWhere(node);
+                case "inquery":
+                    return VisitOperatorInquery(node);
                 case "like":
-                    return VisitOperatorLike(node);
+                case "likei":
+                    return VisitOperatorLikeLikei(node);
                 case "exists":
-                    return VisitOperatorExists(node);
+                case "nexists":
+                    return VisitOperatorExistsNexists(node);
                 case "size":
                     return VisitOperatorSize(node);
                 default:

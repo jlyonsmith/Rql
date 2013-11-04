@@ -119,9 +119,9 @@ namespace Rql.MongoDB.Tests
         }
 
         [Test()]
-        public void TestWhere()
+        public void TestInQuery()
         {
-            string rql = "in(reference,ids(datas,eq(a,10)))";
+            string rql = "inquery(reference, datas, eq(a,10))";
             string expectedMongo = "{ \"reference\" : { \"$in\" : [ObjectId(\"51d1e6baec98e811b7ee9d20\"), ObjectId(\"51d1e6baec98e811b7ee9d25\")] } }";
             string mongo = new RqlToMongoQueryCompiler().Compile(
                 this.RqlNamespace.GetCollectionInfo(typeof(Data)), rql, 
@@ -135,14 +135,6 @@ namespace Rql.MongoDB.Tests
                 }).ToString();
 
             Assert.AreEqual(expectedMongo, mongo);
-        }
-
-        [Test()]
-        public void TestIdsAtRoot()
-        {
-            string rql = "ids(datas,eq(a,10))";
-            Assert.That(() => new RqlToMongoQueryCompiler().Compile(
-                this.RqlNamespace.GetCollectionInfo(typeof(Data)), rql, null), Throws.Exception);
         }
 
         [Test()]

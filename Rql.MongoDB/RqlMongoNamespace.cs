@@ -15,11 +15,14 @@ namespace Rql.MongoDB
         {
         }
 
-        public RqlMongoNamespace(Assembly assembly) : base()
+        public RqlMongoNamespace(params Assembly[] assemblies) : base()
         {
-            var types = assembly.GetTypes().AsEnumerable()
-                .Where(t => typeof(IRqlCollection).IsAssignableFrom(t))
-                .ToArray();
+            var types = new List<Type>();
+
+            foreach (var assembly in assemblies)
+            {
+                types.AddRange(assembly.GetTypes().AsEnumerable().Where(t => typeof(IRqlCollection).IsAssignableFrom(t)));
+            }
 
             this.CollectionInfos = new Dictionary<string, RqlCollectionInfo>(types.Count(), StringComparer.InvariantCultureIgnoreCase);
             this.CollectionTypes = new Dictionary<Type, string>();

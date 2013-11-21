@@ -25,3 +25,4 @@ cachefile-*.txt
 .DS_Store
 thumbs.db
 UpgradeLog.xml
+dump.rdb

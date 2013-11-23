@@ -20,7 +20,7 @@ namespace Rql.MongoDB
         }
     }
 
-    public delegate List<ObjectId> IdsQueryCompilerDelegate(RqlCollectionInfo collectionInfo, RqlExpression expression);
+    public delegate List<ObjectId> IdsQueryCompilerDelegate(IRqlCollectionInfo collectionInfo, RqlExpression expression);
 
     public class RqlToMongoQueryCompiler : RqlExpressionVisitor
     {
@@ -28,8 +28,7 @@ namespace Rql.MongoDB
         private static Regex hashRegex;
         private StringBuilder sb;
         private RqlExpression exp;
-        private RqlCollectionInfo collectionInfo;
-        private Stack<RqlDataType> lhsFieldTypeStack;
+        private IRqlCollectionInfo collectionInfo;
         private IdsQueryCompilerDelegate idsQueryCompiler;
         
         private static Regex IndexRegex 
@@ -62,12 +61,12 @@ namespace Rql.MongoDB
         {
         }
 
-        public IMongoQuery Compile(RqlCollectionInfo collectionInfo, string rql, IdsQueryCompilerDelegate idsQueryCompiler)
+        public IMongoQuery Compile(IRqlCollectionInfo collectionInfo, string rql, IdsQueryCompilerDelegate idsQueryCompiler)
         {
             return Compile(collectionInfo, new RqlParser().Parse(rql), idsQueryCompiler);
         }
 
-        public IMongoQuery Compile(RqlCollectionInfo collectionInfo, RqlExpression expression, IdsQueryCompilerDelegate idsQueryCompiler)
+        public IMongoQuery Compile(IRqlCollectionInfo collectionInfo, RqlExpression expression, IdsQueryCompilerDelegate idsQueryCompiler)
         {
             if (collectionInfo == null)
                 throw new ArgumentNullException();
@@ -75,7 +74,6 @@ namespace Rql.MongoDB
             this.exp = expression;
             this.collectionInfo = collectionInfo;
             this.idsQueryCompiler = idsQueryCompiler;
-            this.lhsFieldTypeStack = new Stack<RqlDataType>();
             this.sb = new StringBuilder();
 
             Visit(exp);
@@ -107,14 +105,6 @@ namespace Rql.MongoDB
             throw new RqlToMongoException(String.Format(s, args));
         }
 
-        private RqlFieldInfo GetFieldInfo(string name)
-        {
-            // Replace any indexes in the name with #'s for the look-up to work
-            name = IndexRegex.Replace(name, ".#");
-
-            return collectionInfo.GetFieldInfo(name);
-        }
-
         private RqlExpression VisitOperatorEq(RqlFunctionCallExpression node)
         {
             if (node.Arguments.Count != 2)
@@ -130,13 +120,9 @@ namespace Rql.MongoDB
             if (constant == null)
                 ThrowError(node, "Second argument must be a constant");
 
-            RqlFieldInfo fieldInfo = GetFieldInfo(identifier.Name);
-
             sb.Append("{");
             VisitIdentifier(identifier);
-            lhsFieldTypeStack.Push(fieldInfo.RqlType);
             VisitConstant(constant);
-            lhsFieldTypeStack.Pop();
             sb.Append("}");
             return node;
         }
@@ -156,16 +142,12 @@ namespace Rql.MongoDB
             if (constant == null)
                 ThrowError(node, "Second argument must be a constant");
 
-            RqlFieldInfo fieldInfo = GetFieldInfo(identifier.Name);
-
             sb.Append("{");
             VisitIdentifier(identifier);
             sb.Append("{$");
             sb.Append(node.Name);
             sb.Append(": ");
-            lhsFieldTypeStack.Push(fieldInfo.RqlType);
             VisitConstant(constant);
-            lhsFieldTypeStack.Pop();
             sb.Append("}");
             sb.Append("}");
             return node;
@@ -190,15 +172,11 @@ namespace Rql.MongoDB
 
             sb.Append("{");
 
-            RqlFieldInfo fieldInfo = GetFieldInfo(identifier.Name);
-
             VisitIdentifier(identifier);
             sb.Append("{$");
             sb.Append(node.Name);
             sb.Append(": ");
-            lhsFieldTypeStack.Push(fieldInfo.SubRqlType);
             Visit(node.Arguments[1]);
-            lhsFieldTypeStack.Pop();
             sb.Append("}");
             sb.Append("}");
             return node;
@@ -245,7 +223,7 @@ namespace Rql.MongoDB
             if (resIdentifier == null)
                 ThrowError(resIdentifier, "Second argument must be an identifier");
 
-            RqlCollectionInfo idsCollectionInfo = this.collectionInfo.RqlNamespace.GetCollectionInfo(resIdentifier.Name);
+            IRqlCollectionInfo idsCollectionInfo = this.collectionInfo.RqlNamespace.GetCollectionInfoByRqlName(resIdentifier.Name);
 
             if (idsCollectionInfo == null)
                 ThrowError(fieldIdentifier, "Second argument is not a valid resource collection");
@@ -258,15 +236,11 @@ namespace Rql.MongoDB
 
             sb.Append("{");
 
-            RqlFieldInfo fieldInfo = GetFieldInfo(fieldIdentifier.Name);
-
             VisitIdentifier(fieldIdentifier);
             sb.Append("{\"$in\": ");
-            lhsFieldTypeStack.Push(fieldInfo.SubRqlType);
             Visit(RqlExpression.Tuple(
                 RqlToken.LeftParen(node.Token.Offset), 
                 ids.Select<ObjectId, RqlConstantExpression>(id => RqlExpression.Constant(RqlToken.Constant(node.Token.Offset, id))).ToList()));
-            lhsFieldTypeStack.Pop();
             sb.Append("}");
             sb.Append("}");
 
@@ -283,11 +257,6 @@ namespace Rql.MongoDB
             if (identifier == null)
                 ThrowError(node.Arguments[0], "First argument must be an identifier");
             
-            RqlFieldInfo fieldInfo = GetFieldInfo(identifier.Name);
-
-            if (fieldInfo.RqlType != RqlDataType.String)
-                ThrowError(node.Arguments[0], "Field must be a string type");
-
             RqlConstantExpression constant = node.Arguments[1] as RqlConstantExpression;
 
             if (constant == null || constant.Value.GetType() != typeof(string))
@@ -332,11 +301,6 @@ namespace Rql.MongoDB
 
             if (identifier == null)
                 ThrowError(node.Arguments[0], "First argument must be an identifier");
-
-            RqlFieldInfo fieldInfo = GetFieldInfo(identifier.Name);
-
-            if (fieldInfo.RqlType != RqlDataType.Tuple)
-                ThrowError(identifier, "First argument must be a tuple");
 
             RqlConstantExpression constant = node.Arguments[1] as RqlConstantExpression;
 
@@ -395,38 +359,10 @@ namespace Rql.MongoDB
         {
             object nodeValue = node.Value;
             Type nodeType = node.Type;
-            RqlDataType lhsFieldType = (lhsFieldTypeStack.Count > 0 ? lhsFieldTypeStack.Peek() : RqlDataType.None);
 
-            if (nodeType == typeof(string))
+            if (nodeType == typeof(RqlId))
             {
-                if (lhsFieldType == RqlDataType.Id)
-                {
-                    RqlId id;
-
-                    if (RqlId.TryParse((string)nodeValue, out id))
-                    {
-                        nodeValue = new ObjectId(id.ToString("n"));
-                        nodeType = nodeValue.GetType();
-                    }
-                    else
-                        ThrowError(node, "{0} is not a valid resource id", nodeValue);
-                }
-                else if (lhsFieldType == RqlDataType.DateTime)
-                {
-                    RqlDateTime dateTime;
-
-                    if (RqlDateTime.TryParse((string)nodeValue, out dateTime))
-                    {
-                        nodeValue = (DateTime)dateTime;
-                        nodeType = nodeValue.GetType();
-                    }
-                    else
-                        ThrowError(node, "{0} is not a valid date/time", nodeValue);
-                }
-            }
-            else if (nodeType == typeof(RqlId))
-            {
-                nodeValue = new ObjectId(((RqlId)nodeValue).ToString("n"));
+                nodeValue = ((RqlId)nodeValue).ToObjectId();
                 nodeType = nodeValue.GetType();
             }
             else if (nodeType == typeof(RqlDateTime))
@@ -490,23 +426,10 @@ namespace Rql.MongoDB
 
         protected override RqlExpression VisitIdentifier(RqlIdentifierExpression node)
         {
-            RqlFieldInfo fieldInfo = GetFieldInfo(node.Name);
-
-            if (fieldInfo == null)
-                ThrowError(node, "Field '{0}' not found in '{1}' collection", node.Name, collectionInfo.Name);
-
-            string fieldName = fieldInfo.Name;
-
-            // Pull out any indexes from the identifier
-            var indexMatches = IndexRegex.Matches(node.Name);
-
-            // Put them back in the canonical field name
-            int i = 0;
-
-            fieldName = HashRegex.Replace(fieldName, m => indexMatches[i++].Groups[0].Value);
+            IRqlFieldInfo fieldInfo = collectionInfo.GetFieldInfoByRqlName(node.Name);
 
             sb.Append("\"");
-            sb.Append(fieldName);
+            sb.Append(fieldInfo.Name);
             sb.Append("\": ");
 
             return node;

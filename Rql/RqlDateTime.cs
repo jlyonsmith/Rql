@@ -72,11 +72,11 @@ namespace Rql
 
         public void InternalParse(string s)
         {
-            if (s.StartsWith("@"))
-                s = s.Substring(1);
+            if (!s.StartsWith("@"))
+                throw new ArgumentException("RQL date/time must start with '@' symbol");
 
             this.dateTime = DateTime.SpecifyKind(
-                DateTime.ParseExact(s, RqlDateTime.FormatPattern, null, DateTimeStyles.None), DateTimeKind.Utc);
+                DateTime.ParseExact(s.Substring(1), RqlDateTime.FormatPattern, null, DateTimeStyles.None), DateTimeKind.Utc);
         }
 
         public static RqlDateTime Parse(string s)
@@ -104,6 +104,14 @@ namespace Rql
             TimeSpan utcOffset = tzi.GetUtcOffset(DateTime.Now);
             int hours = utcOffset.Hours;
             return Math.Sign(hours) >= 0 ? "+" : "-" + Math.Abs(hours).ToString("00") + utcOffset.Minutes.ToString("00");
+        }
+
+        public static RqlDateTime UtcNow
+        {
+            get 
+            {
+                return new RqlDateTime(DateTime.UtcNow);
+            }
         }
     }
 }

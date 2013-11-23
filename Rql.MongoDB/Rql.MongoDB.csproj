@@ -43,6 +43,10 @@
     <Compile Include="RqlMongoNamespace.cs" />
     <Compile Include="RqlToMongoQueryCompiler.cs" />
     <Compile Include="SortSpecToMongoSortByCompiler.cs" />
+    <Compile Include="ObjectIdExtensions.cs" />
+    <Compile Include="RqlIdExtensions.cs" />
+    <Compile Include="RqlMongoCollectionInfo.cs" />
+    <Compile Include="RqlMongoFieldInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

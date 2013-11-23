@@ -70,7 +70,7 @@ namespace Rql.MongoDB.Tests
             {
                 var pair = pairs[i];
                 string mongo = new RqlToMongoQueryCompiler().Compile(
-                    this.RqlNamespace.GetCollectionInfo(typeof(Data)), pair.Rql, null).ToString();
+                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql, null).ToString();
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }
@@ -81,7 +81,7 @@ namespace Rql.MongoDB.Tests
         {
             var pairs = new[] 
             {
-                new { Rql = "eq(thevalueofpi,3.14)", Mongo = "{ \"theValueOfPi\" : 3.14 }" },
+                new { Rql = "eq(theValueOfPi,3.14)", Mongo = "{ \"theValueOfPi\" : 3.14 }" },
                 new { Rql = "eq(references.0,$51d1e6baec98e811b7ee9d20)", Mongo = "{ \"references.0\" : ObjectId(\"51d1e6baec98e811b7ee9d20\") }" },
                 new { Rql = "eq(other.a,10)", Mongo = "{ \"other.a\" : 10 }" },
                 new { Rql = "eq(others.3,20)", Mongo = "{ \"others.3\" : 20 }" },
@@ -93,7 +93,7 @@ namespace Rql.MongoDB.Tests
             {
                 var pair = pairs[i];
                 string mongo = new RqlToMongoQueryCompiler().Compile(
-                    this.RqlNamespace.GetCollectionInfo(typeof(Data)), pair.Rql, null).ToString();
+                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql, null).ToString();
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }
@@ -112,7 +112,7 @@ namespace Rql.MongoDB.Tests
             {
                 var pair = pairs[i];
                 string mongo = new RqlToMongoQueryCompiler().Compile(
-                    this.RqlNamespace.GetCollectionInfo(typeof(Data)), pair.Rql, null).ToString();
+                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql, null).ToString();
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }
@@ -124,7 +124,7 @@ namespace Rql.MongoDB.Tests
             string rql = "inquery(reference, datas, eq(a,10))";
             string expectedMongo = "{ \"reference\" : { \"$in\" : [ObjectId(\"51d1e6baec98e811b7ee9d20\"), ObjectId(\"51d1e6baec98e811b7ee9d25\")] } }";
             string mongo = new RqlToMongoQueryCompiler().Compile(
-                this.RqlNamespace.GetCollectionInfo(typeof(Data)), rql, 
+                this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), rql, 
                 (name, exp) =>
                 {
                     return new List<ObjectId>()
@@ -148,9 +148,7 @@ namespace Rql.MongoDB.Tests
                 new { Rql = "eq(logical,false)", Mongo = "{ \"logical\" : false }" },
                 new { Rql = "eq(a,10)", Mongo = "{ \"a\" : 10 }" },
                 new { Rql = "eq(a,10.01)", Mongo = "{ \"a\" : 10.01 }" },
-                new { Rql = "eq(id,'51d1e6baec98e811b7ee9d20')", Mongo = "{ \"_id\" : ObjectId(\"51d1e6baec98e811b7ee9d20\") }" },
                 new { Rql = "eq(id,$51d1e6baec98e811b7ee9d20)", Mongo = "{ \"_id\" : ObjectId(\"51d1e6baec98e811b7ee9d20\") }" },
-                new { Rql = "eq(when,'2013-06-24T15:00:00Z')", Mongo = "{ \"when\" : ISODate(\"2013-06-24T15:00:00Z\") }" },
                 new { Rql = "eq(when,@2013-06-24T15:00:00Z)", Mongo = "{ \"when\" : ISODate(\"2013-06-24T15:00:00Z\") }" },
                 new { Rql = "in(a,(1,2,3))", Mongo = "{ \"a\" : { \"$in\" : [1, 2, 3] } }" },
             };
@@ -159,7 +157,7 @@ namespace Rql.MongoDB.Tests
             {
                 var pair = pairs[i];
                 string mongo = new RqlToMongoQueryCompiler().Compile(
-                    this.RqlNamespace.GetCollectionInfo(typeof(Data)), pair.Rql, null).ToString();
+                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql, null).ToString();
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }

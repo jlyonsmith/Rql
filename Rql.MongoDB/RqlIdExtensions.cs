@@ -9,6 +9,11 @@ namespace Rql.MongoDB
         {
             return new ObjectId(rqlId.ToString("n"));
         }
+
+        public static ObjectId ToObjectId(this RqlId? rqlId)
+        {
+            return new ObjectId(rqlId.Value.ToString("n"));
+        }
     }
 }
 

@@ -30,8 +30,6 @@ namespace Rql.MongoDB
 
             foreach (var type in types)
             {
-                var fieldInfos = new List<RqlMongoFieldInfo>();
-
                 object[] attrs = type.GetCustomAttributes(typeof(RqlNameAttribute), true);
                 RqlNameAttribute attr = attrs.Length > 0 ? (RqlNameAttribute)attrs[0] : null;
 

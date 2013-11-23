@@ -2,15 +2,13 @@ using System;
 
 namespace Rql
 {
-    public sealed class RqlId : IFormattable
+    public struct RqlId : IFormattable
     {
         private string id;
 
-        private RqlId()
-        {
-        }
+        public readonly static RqlId Zero = new RqlId();
 
-        public RqlId(string s)
+        public RqlId(string s) : this()
         {
             InternalParse(s);
         }
@@ -38,11 +36,11 @@ namespace Rql
             switch (format)
             {
                 case "n":
-                    return id.Substring(1);
+                    return id;
                 case "$":
                 case "G":
                 default:
-                    return id;
+                    return '$' + id;
             }
         }
 
@@ -79,9 +77,12 @@ namespace Rql
         private void InternalParse(string s)
         {
             if (!s.StartsWith("$"))
-                this.id = "$" + s;
-            else
-                this.id = s;
+                throw new ArgumentException("RQL id must start with '$' symbol");
+
+            if (s.Length < 2)
+                throw new ArgumentException("RQL id must be at least two characters long");
+
+            this.id = s.Substring(1);
         }
         
         public static RqlId Parse(string s)
@@ -98,7 +99,7 @@ namespace Rql
             }
             catch (Exception)
             {
-                id = null;
+                id = Zero;
                 return false;
             }
         }

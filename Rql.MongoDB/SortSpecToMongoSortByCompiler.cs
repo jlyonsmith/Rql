@@ -23,32 +23,32 @@ namespace Rql.MongoDB
 
     public class SortSpecToMongoSortByCompiler
     {
-        private HashSet<string> fieldNames;
-
         public SortSpecToMongoSortByCompiler()
         {
         }
 
-        public IMongoSortBy Compile(Type collectionType, SortSpec sortSpec)
+        public IMongoSortBy Compile(IRqlCollectionInfo collectionInfo, SortSpec sortSpec)
         {
-            PropertyInfo[] propInfos = collectionType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-
-            fieldNames = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
-
-            foreach (var propInfo in propInfos)
-                fieldNames.Add(propInfo.Name);
-
             var builder = new SortByBuilder();
 
             foreach (var field in sortSpec.Fields)
             {
-                if (String.CompareOrdinal(field.Name, "$natural") != 0 && !fieldNames.Contains(field.Name))
-                    throw new SortSpecToMongoException(String.Format("Field {0} does not exist", field.Name));
+                var fieldName = field.Name;
+
+                if (String.CompareOrdinal(field.Name, "$natural") != 0)
+                {
+                    var fieldInfo = collectionInfo.GetFieldInfoByRqlName(field.Name);
+
+                    if (fieldInfo == null)
+                        throw new SortSpecToMongoException(String.Format("Field {0} does not exist", field.Name));
+
+                    fieldName = fieldInfo.Name;
+                }
 
                 if (field.Order == SortSpecSortOrder.Ascending)
-                    builder.Ascending(MongoUtils.ToCamelCase(field.Name));
+                    builder.Ascending(MongoUtils.ToCamelCase(fieldName));
                 else if (field.Order == SortSpecSortOrder.Descending)
-                    builder.Descending(MongoUtils.ToCamelCase(field.Name));
+                    builder.Descending(MongoUtils.ToCamelCase(fieldName));
             }
 
             return (IMongoSortBy)builder;

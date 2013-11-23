@@ -16,6 +16,11 @@ namespace Rql
 
             this.dateTime = dateTime;
         }
+
+        public RqlDateTime(int year, int month, int day, int hour, int minute, int second)
+        {
+            this.dateTime = DateTime.SpecifyKind(new DateTime(year, month, day, hour, minute, second), DateTimeKind.Utc);
+        }
         
         public RqlDateTime(string s) : this()
         {

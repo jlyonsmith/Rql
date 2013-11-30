@@ -7,12 +7,22 @@ namespace Rql.MongoDB
     {
         public static ObjectId ToObjectId(this RqlId rqlId)
         {
-            return new ObjectId(rqlId.ToString("n"));
+            var s = rqlId.ToString("n");
+
+            if (s.Length == 0)
+                return new ObjectId();
+            else
+                return new ObjectId(s);
         }
 
         public static ObjectId ToObjectId(this RqlId? rqlId)
         {
-            return new ObjectId(rqlId.Value.ToString("n"));
+            var s = rqlId.Value.ToString("n");
+
+            if (s.Length == 0)
+                return new ObjectId();
+            else
+                return new ObjectId(s);
         }
     }
 }

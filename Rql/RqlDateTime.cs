@@ -80,8 +80,11 @@ namespace Rql
             if (!s.StartsWith("@"))
                 throw new ArgumentException("RQL date/time must start with '@' symbol");
 
-            this.dateTime = DateTime.SpecifyKind(
-                DateTime.ParseExact(s.Substring(1), RqlDateTime.FormatPattern, null, DateTimeStyles.None), DateTimeKind.Utc);
+            if (s.Length > 1)
+                this.dateTime = DateTime.SpecifyKind(
+                    DateTime.ParseExact(s.Substring(1), RqlDateTime.FormatPattern, null, DateTimeStyles.None), DateTimeKind.Utc);
+            else
+                this.dateTime = DateTime.MinValue;
         }
 
         public static RqlDateTime Parse(string s)

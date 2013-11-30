@@ -33,14 +33,16 @@ namespace Rql
             if (format == null) 
                 format = "G";
 
+            var s = (id == null ? "" : id);
+
             switch (format)
             {
                 case "n":
-                    return id;
+                    return s;
                 case "$":
                 case "G":
                 default:
-                    return '$' + id;
+                    return '$' + s;
             }
         }
 
@@ -79,10 +81,10 @@ namespace Rql
             if (!s.StartsWith("$"))
                 throw new ArgumentException("RQL id must start with '$' symbol");
 
-            if (s.Length < 2)
-                throw new ArgumentException("RQL id must be at least two characters long");
-
-            this.id = s.Substring(1);
+            if (s.Length > 1)
+                this.id = s.Substring(1);
+            else
+                this.id = String.Empty;
         }
         
         public static RqlId Parse(string s)

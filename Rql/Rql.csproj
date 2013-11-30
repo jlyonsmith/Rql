@@ -55,6 +55,8 @@
     <Compile Include="IRqlDocument.cs" />
     <Compile Include="IRqlCollectionInfo.cs" />
     <Compile Include="IRqlFieldInfo.cs" />
+    <Compile Include="BitStream.cs" />
+    <Compile Include="Base62Extensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 #endif 
 [assembly: AssemblyCompany("John Lyon-Smith")]
 [assembly: AssemblyProduct("RQL")]
-[assembly: AssemblyCopyright("(c) 2013, John Lyon-Smith.")]
+[assembly: AssemblyCopyright("Copyright (c), John Lyon-Smith.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("1.0.0.0")]

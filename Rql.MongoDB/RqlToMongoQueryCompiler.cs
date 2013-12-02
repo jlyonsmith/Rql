@@ -281,13 +281,13 @@ namespace Rql.MongoDB
             if (identifier == null)
                 ThrowError(node.Arguments[0], "Argument must be an identifier");
 
-            bool exists = (identifier.Name == "exists");
+            bool exists = (node.Name == "exists");
 
             sb.Append("{");
             VisitIdentifier(identifier);
             sb.Append("{$");
             sb.Append(node.Name);
-            sb.AppendFormat(": {0} }", exists ? "true" : "false");
+            sb.AppendFormat(": {0} }}", exists ? "true" : "false");
             sb.Append("}");
             return node;
         }

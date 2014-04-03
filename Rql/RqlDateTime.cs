@@ -12,7 +12,13 @@ namespace Rql
         public RqlDateTime(DateTime dateTime) : this()
         {
             if (dateTime.Kind != DateTimeKind.Utc)
-                throw new ArgumentException("Argument must be a UTC time");
+            {
+                // Assume the minimum value is UTC as it default value
+                if (dateTime == DateTime.MinValue)
+                    dateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
+                else
+                    throw new ArgumentException("Argument must be a UTC time");
+            }
 
             this.dateTime = dateTime;
         }

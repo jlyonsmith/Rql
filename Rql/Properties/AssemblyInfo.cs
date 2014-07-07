@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("Copyright (c), John Lyon-Smith.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.10805.6")]
+[assembly: AssemblyVersion("1.3.0.0")]
+[assembly: AssemblyFileVersion("1.3.20707.0")]
 
 

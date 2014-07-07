@@ -4,6 +4,7 @@
     <File>Rql/Properties/AssemblyInfo.cs</File>
     <File>Rql.MongoDB/Properties/AssemblyInfo.cs</File>
     <File>scratch/Rql.version.txt</File>
+    <File>RqlId/Properties/AssemblyInfo.cs</File>
   </Files>
   <Major>1</Major>
   <Minor>0</Minor>

@@ -7,13 +7,15 @@ namespace Rql.MongoDB
     {
         public static RqlId ToRqlId(this ObjectId objectId)
         {
-            return new RqlId("$" + objectId.ToString());
+            return new RqlId(objectId.ToByteArray());
         }
 
         public static RqlId ToRqlId(this ObjectId? objectId)
         {
-            return new RqlId("$" + objectId.Value.ToString());
+            if (!objectId.HasValue)
+                return new RqlId();
+            else
+                return new RqlId(objectId.Value.ToByteArray());
         }
     }
 }
-

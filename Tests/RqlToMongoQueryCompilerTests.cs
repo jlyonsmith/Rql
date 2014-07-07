@@ -82,7 +82,7 @@ namespace Rql.MongoDB.Tests
             var pairs = new[] 
             {
                 new { Rql = "eq(theValueOfPi,3.14)", Mongo = "{ \"theValueOfPi\" : 3.14 }" },
-                new { Rql = "eq(references.0,$51d1e6baec98e811b7ee9d20)", Mongo = "{ \"references.0\" : ObjectId(\"51d1e6baec98e811b7ee9d20\") }" },
+                new { Rql = "eq(references.0,$d7X2HQlexQbSmn0B)", Mongo = "{ \"references.0\" : ObjectId(\"51d1e6baec98e811b7ee9d20\") }" },
                 new { Rql = "eq(other.a,10)", Mongo = "{ \"other.a\" : 10 }" },
                 new { Rql = "eq(others.3,20)", Mongo = "{ \"others.3\" : 20 }" },
                 new { Rql = "eq(others.a,10)", Mongo = "{ \"others.a\" : 10 }" },
@@ -148,7 +148,7 @@ namespace Rql.MongoDB.Tests
                 new { Rql = "eq(logical,false)", Mongo = "{ \"logical\" : false }" },
                 new { Rql = "eq(a,10)", Mongo = "{ \"a\" : 10 }" },
                 new { Rql = "eq(a,10.01)", Mongo = "{ \"a\" : 10.01 }" },
-                new { Rql = "eq(id,$51d1e6baec98e811b7ee9d20)", Mongo = "{ \"_id\" : ObjectId(\"51d1e6baec98e811b7ee9d20\") }" },
+                new { Rql = "eq(id,$d7X2HQlexQbSmn0B)", Mongo = "{ \"_id\" : ObjectId(\"51d1e6baec98e811b7ee9d20\") }" },
                 new { Rql = "eq(when,@2013-06-24T15:00:00Z)", Mongo = "{ \"when\" : ISODate(\"2013-06-24T15:00:00Z\") }" },
                 new { Rql = "in(a,(1,2,3))", Mongo = "{ \"a\" : { \"$in\" : [1, 2, 3] } }" },
             };

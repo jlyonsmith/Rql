@@ -7,7 +7,25 @@ namespace Rql.MongoDB
     {
         public static ObjectId ToObjectId(this RqlId rqlId)
         {
-            return new ObjectId(rqlId.ToByteArray());
+            var bytes = rqlId.ToByteArray();
+            byte[] tmp;
+
+            if (bytes.Length > 12)
+            {
+                tmp = new byte[12];
+                Array.Copy(bytes, tmp, 12);
+            }
+            else if (bytes.Length < 12)
+            {
+                tmp = new byte[12];
+                Array.Copy(bytes, tmp, bytes.Length);
+                for (int i = bytes.Length; i < 12; i++)
+                    tmp[i] = 0;
+            }
+            else
+                tmp = bytes;
+
+            return new ObjectId(tmp);
         }
 
         public static ObjectId ToObjectId(this RqlId? rqlId)
@@ -15,7 +33,7 @@ namespace Rql.MongoDB
             if (!rqlId.HasValue)
                 return new ObjectId();
             else
-                return new ObjectId(rqlId.Value.ToByteArray());
+                return rqlId.Value.ToObjectId();
         }
     }
 }

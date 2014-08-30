@@ -5,10 +5,12 @@
     <File>Rql.MongoDB/Properties/AssemblyInfo.cs</File>
     <File>RqlId/Properties/AssemblyInfo.cs</File>
     <File>Scratch/Rql.version.txt</File>
+    <File>Rql.nuspec</File>
+    <File>Rql.MongoDB.nuspec</File>
   </Files>
   <Major>1</Major>
   <Minor>3</Minor>
-  <Build>20707</Build>
+  <Build>10727</Build>
   <Revision>0</Revision>
-  <StartYear>2013</StartYear>
+  <StartYear>2014</StartYear>
 </Version>

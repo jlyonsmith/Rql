@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>Rql</id>
+    <version>1.3.10727.0</version>
+    <authors>jlyonsmith</authors>
+    <owners>jlyonsmith</owners>
+    <licenseUrl>http://github.com/jlyonsmith/Rql/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>http://github.com/jlyonsmith/Rql</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>REST Query Language (RQL).  A simple, extensible query languaged for REST API's.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright (C) 2014 John Lyon-Smith</copyright>
+    <tags>mongodb rest api query sql mysql mono osx linux</tags>
+  </metadata>
+  <files>
+    <file src="Rql/bin/Release/Rql.dll" target="lib/net45" /> 
+  </files>
+</package>

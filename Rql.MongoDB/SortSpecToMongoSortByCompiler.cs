@@ -10,10 +10,6 @@ using Rql;
 
 namespace Rql.MongoDB
 {
-    // TODO: Need unit tests for this class
-    // TODO: Should only be able to sort on fields that have indexes?
-    // TODO: Change this so it doesn't do reflection all the time by using a global sort spec converter cache 
-
     public class SortSpecToMongoException : Exception
     {
         public SortSpecToMongoException(string message) : base(message)
@@ -27,7 +23,15 @@ namespace Rql.MongoDB
         {
         }
 
-        public IMongoSortBy Compile(IRqlCollectionInfo collectionInfo, SortSpec sortSpec)
+        public IMongoSortBy Compile(string sortSpec)
+        {
+            if (String.IsNullOrEmpty(sortSpec))
+                return SortBy.Null;
+
+            return Compile(new SortSpecParser().Parse(sortSpec));
+        }
+
+        public IMongoSortBy Compile(SortSpec sortSpec)
         {
             var builder = new SortByBuilder();
 
@@ -37,12 +41,7 @@ namespace Rql.MongoDB
 
                 if (String.CompareOrdinal(field.Name, "$natural") != 0)
                 {
-                    var fieldInfo = collectionInfo.GetFieldInfoByRqlName(field.Name);
-
-                    if (fieldInfo == null)
-                        throw new SortSpecToMongoException(String.Format("Field {0} does not exist", field.Name));
-
-                    fieldName = fieldInfo.Name;
+                    fieldName = MongoNameFixer.Field(field.Name);
                 }
 
                 if (field.Order == SortSpecSortOrder.Ascending)

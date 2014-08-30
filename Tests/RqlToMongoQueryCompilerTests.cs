@@ -70,7 +70,7 @@ namespace Rql.MongoDB.Tests
             {
                 var pair = pairs[i];
                 string mongo = new RqlToMongoQueryCompiler().Compile(
-                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql, null).ToString();
+                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql).ToString();
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }
@@ -93,7 +93,7 @@ namespace Rql.MongoDB.Tests
             {
                 var pair = pairs[i];
                 string mongo = new RqlToMongoQueryCompiler().Compile(
-                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql, null).ToString();
+                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql).ToString();
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }
@@ -112,29 +112,10 @@ namespace Rql.MongoDB.Tests
             {
                 var pair = pairs[i];
                 string mongo = new RqlToMongoQueryCompiler().Compile(
-                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql, null).ToString();
+                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql).ToString();
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }
-        }
-
-        [Test()]
-        public void TestInQuery()
-        {
-            string rql = "inquery(reference, datas, eq(a,10))";
-            string expectedMongo = "{ \"reference\" : { \"$in\" : [ObjectId(\"51d1e6baec98e811b7ee9d20\"), ObjectId(\"51d1e6baec98e811b7ee9d25\")] } }";
-            string mongo = new RqlToMongoQueryCompiler().Compile(
-                this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), rql, 
-                (name, exp) =>
-                {
-                    return new List<ObjectId>()
-                    {
-                        new ObjectId("51d1e6baec98e811b7ee9d20"),
-                        new ObjectId("51d1e6baec98e811b7ee9d25")
-                    };
-                }).ToString();
-
-            Assert.AreEqual(expectedMongo, mongo);
         }
 
         [Test()]
@@ -157,7 +138,7 @@ namespace Rql.MongoDB.Tests
             {
                 var pair = pairs[i];
                 string mongo = new RqlToMongoQueryCompiler().Compile(
-                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql, null).ToString();
+                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql).ToString();
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }

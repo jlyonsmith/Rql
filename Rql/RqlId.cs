@@ -29,7 +29,7 @@ namespace Rql
             25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 255, 255, 255, 255, 255,
         };
 
-        private byte[] id;
+        private BigInteger id;
 
         public readonly static RqlId Zero = new RqlId();
 
@@ -46,9 +46,24 @@ namespace Rql
         public RqlId(byte[] data)
         {
             if (data == null || data.Length == 0)
-                throw new ArgumentException("Data must be non-null and at least one byte long");
+            {
+                id = BigInteger.Zero;
+                return;
+            }
 
-            id = data;
+            byte[] tmp;
+
+            // We need to keep BigIntegers positive
+            if ((data[data.Length - 1] & 0x80) != 0)
+            {
+                tmp = new byte[data.Length + 1];
+                Array.Copy(data, tmp, data.Length);
+                tmp[tmp.Length - 1] = 0;
+            }
+            else
+                tmp = data;
+
+            id = new BigInteger(tmp);
         }
 
         #region IFormattable implementation
@@ -66,28 +81,8 @@ namespace Rql
             if (format == null) 
                 format = "G";
 
-            // Need to keep BigIntegers positive
-            byte[] data;
-
-            if (id == null)
-            {
-                data = new byte[] { 0 };
-            }
-            else if ((id[id.Length - 1] & 0x80) != 0)
-            {
-                data = new byte[id.Length + 1];
-
-                Array.Copy(id, data, id.Length);
-                data[data.Length - 1] = 0;
-            }
-            else
-            {
-                data = id;
-            }
-
-            var n = new BigInteger(data);
-            var r = n % 62;
-            var q = n / 62;
+            var r = id % 62;
+            var q = id / 62;
             var sb = new StringBuilder();
 
             sb.Append(Digits[(int)r]);
@@ -114,7 +109,7 @@ namespace Rql
 
         public byte[] ToByteArray()
         {
-            return id;
+            return id.ToByteArray();
         }
 
         public override string ToString()
@@ -136,15 +131,12 @@ namespace Rql
         {
             RqlId other = (RqlId)obj;
 
-            if (Object.ReferenceEquals(other.id, id))
-                return true;
-
-            return StructuralComparisons.StructuralComparer.Compare(other.id, id) == 0;
+            return other.id == this.id;
         }
 
         public bool Equals(RqlId other)
         {
-            return StructuralComparisons.StructuralComparer.Compare(other.id, id) == 0;
+            return other.id == this.id;
         }
 
         public override int GetHashCode()
@@ -183,7 +175,7 @@ namespace Rql
                 m *= 62;
             }
 
-            id = n.ToByteArray();
+            id = n;
         }
         
         public static RqlId Parse(string s)

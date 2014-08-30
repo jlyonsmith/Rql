@@ -48,6 +48,7 @@
     <Compile Include="RqlMongoNamespaceTests.cs" />
     <Compile Include="RqlToMongoQueryCompilerTests.cs" />
     <Compile Include="RqlIdTests.cs" />
+    <Compile Include="SortSpecToMongoSortByCompilerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

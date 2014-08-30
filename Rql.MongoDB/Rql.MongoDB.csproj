@@ -47,6 +47,7 @@
     <Compile Include="RqlIdExtensions.cs" />
     <Compile Include="RqlMongoCollectionInfo.cs" />
     <Compile Include="RqlMongoFieldInfo.cs" />
+    <Compile Include="MongoNameFixer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

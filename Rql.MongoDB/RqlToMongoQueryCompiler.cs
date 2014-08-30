@@ -20,8 +20,6 @@ namespace Rql.MongoDB
         }
     }
 
-    public delegate List<ObjectId> IdsQueryCompilerDelegate(IRqlCollectionInfo collectionInfo, RqlExpression expression);
-
     public class RqlToMongoQueryCompiler : RqlExpressionVisitor
     {
         private static Regex indexRegex;
@@ -29,8 +27,7 @@ namespace Rql.MongoDB
         private StringBuilder sb;
         private RqlExpression exp;
         private IRqlCollectionInfo collectionInfo;
-        private IdsQueryCompilerDelegate idsQueryCompiler;
-        
+
         private static Regex IndexRegex 
         {
             get
@@ -61,19 +58,18 @@ namespace Rql.MongoDB
         {
         }
 
-        public IMongoQuery Compile(IRqlCollectionInfo collectionInfo, string rql, IdsQueryCompilerDelegate idsQueryCompiler)
+        public IMongoQuery Compile(IRqlCollectionInfo collectionInfo, string rql)
         {
-            return Compile(collectionInfo, new RqlParser().Parse(rql), idsQueryCompiler);
+            return Compile(collectionInfo, new RqlParser().Parse(rql));
         }
 
-        public IMongoQuery Compile(IRqlCollectionInfo collectionInfo, RqlExpression expression, IdsQueryCompilerDelegate idsQueryCompiler)
+        public IMongoQuery Compile(IRqlCollectionInfo collectionInfo, RqlExpression expression)
         {
             if (collectionInfo == null)
                 throw new ArgumentNullException();
 
             this.exp = expression;
             this.collectionInfo = collectionInfo;
-            this.idsQueryCompiler = idsQueryCompiler;
             this.sb = new StringBuilder();
 
             Visit(exp);
@@ -208,45 +204,6 @@ namespace Rql.MongoDB
             return node;
         }
 
-        private RqlExpression VisitOperatorInquery(RqlFunctionCallExpression node)
-        {
-            if (node.Arguments.Count != 3)
-                ThrowError(node, "{0} takes three arguments", node.Name);
-            
-            RqlIdentifierExpression fieldIdentifier = node.Arguments[0] as RqlIdentifierExpression;
-
-            if (fieldIdentifier == null)
-                ThrowError(fieldIdentifier, "First argument must be an identifier");
-
-            RqlIdentifierExpression resIdentifier = node.Arguments[1] as RqlIdentifierExpression;
-
-            if (resIdentifier == null)
-                ThrowError(resIdentifier, "Second argument must be an identifier");
-
-            IRqlCollectionInfo idsCollectionInfo = this.collectionInfo.RqlNamespace.GetCollectionInfoByRqlName(resIdentifier.Name);
-
-            if (idsCollectionInfo == null)
-                ThrowError(fieldIdentifier, "Second argument is not a valid resource collection");
-
-            RqlExpression expression = node.Arguments[2];
-            IEnumerable<ObjectId> ids = new ObjectId[0];
-
-            if (idsQueryCompiler != null)
-                ids = idsQueryCompiler(idsCollectionInfo, expression);
-
-            sb.Append("{");
-
-            VisitIdentifier(fieldIdentifier);
-            sb.Append("{\"$in\": ");
-            Visit(RqlExpression.Tuple(
-                RqlToken.LeftParen(node.Token.Offset), 
-                ids.Select<ObjectId, RqlConstantExpression>(id => RqlExpression.Constant(RqlToken.Constant(node.Token.Offset, id))).ToList()));
-            sb.Append("}");
-            sb.Append("}");
-
-            return node;
-        }
-
         private RqlExpression VisitOperatorLikeLikei(RqlFunctionCallExpression node)
         {
             if (node.Arguments.Count != 2)
@@ -337,8 +294,6 @@ namespace Rql.MongoDB
                 case "and":
                 case "or":
                     return VisitOperatorAndOr(node);
-                case "inquery":
-                    return VisitOperatorInquery(node);
                 case "like":
                 case "likei":
                     return VisitOperatorLikeLikei(node);

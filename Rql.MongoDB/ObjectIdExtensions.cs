@@ -15,7 +15,7 @@ namespace Rql.MongoDB
             if (!objectId.HasValue)
                 return new RqlId();
             else
-                return new RqlId(objectId.Value.ToByteArray());
+                return objectId.Value.ToRqlId();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Rql.Tests
         [Test]
         public void TestFromObjectIds()
         {
-            var datas = new ObjectId[]
+            var objIds = new ObjectId[]
             {
                 ObjectId.Empty,
                 new ObjectId(DateTime.MinValue, 0, 0, 0),
@@ -48,22 +48,53 @@ namespace Rql.Tests
                 new ObjectId(DateTime.MaxValue, 0xffffff, short.MaxValue, 0xffffff),
             };
 
-            var strs = new string[]
+            var rqlIds = new RqlId[]
             {
-                "$0",
-                "$24",
-                "$1F2mgA9gNyZtkTIf6",
-                "$1F2si9jk4p8vTbfmU",
+                new RqlId("$0"),
+                new RqlId("$24"),
+                new RqlId("$1F2mgA9gNyZtkTIf6"),
+                new RqlId("$1F2si9jk4p8vTbfmU")
             };
 
-            for (int i = 0; i < datas.Length; i++)
+            for (int i = 0; i < objIds.Length; i++)
             {
-                var rqlId = datas[i].ToRqlId();
+                var rqlId = objIds[i].ToRqlId();
                 var objId = rqlId.ToObjectId();
-                var s = rqlId.ToString();
+                var rqlId2 = objId.ToRqlId();
 
-                Assert.AreEqual(datas[i], objId, "Data value {0}", i);
-                Assert.AreEqual(strs[i], s, "String value {0}", i);
+                Assert.AreEqual(objIds[i], objId, "ObjectId value {0}", i);
+                Assert.AreEqual(rqlIds[i], rqlId2, "RqlId value {0}", i);
+            }
+        }
+
+        [Test]
+        public void TestFromRqlIds()
+        {
+            var rqlIds = new RqlId[]
+            {
+                new RqlId("$0"),
+                new RqlId("$24"),
+                new RqlId("$1F2mgA9gNyZtkTIf6"),
+                new RqlId("$1Ad4Xro7A6yeAl77J")  // This one caused problems
+
+            };
+
+            var objIds = new ObjectId[]
+            {
+                ObjectId.Empty,
+                new ObjectId(DateTime.MinValue, 0, 0, 0),
+                new ObjectId(DateTime.MinValue, 100, 200, 65535),
+                new ObjectId("53d5244dec98e866c0d800f4")
+            };
+
+            for (int i = 0; i < rqlIds.Length; i++)
+            {
+                var objId = rqlIds[i].ToObjectId();
+                var rqlId = objId.ToRqlId();
+                var objId2 = rqlId.ToObjectId();
+
+                Assert.AreEqual(rqlIds[i], rqlId, "ObjectId value {0}", i);
+                Assert.AreEqual(objIds[i], objId2, "RqlId value {0}", i);
             }
         }
     }

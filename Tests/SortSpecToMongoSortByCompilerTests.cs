@@ -10,14 +10,6 @@ namespace Rql.MongoDB.Tests
     [TestFixture]
     public class SortSpecToMongoSortByCompilerTests
     {
-        private IRqlNamespace RqlNamespace { get; set; }
-
-        [TestFixtureSetUp]
-        public void SetupFixture()
-        {
-            this.RqlNamespace = new RqlMongoNamespace(Assembly.GetExecutingAssembly());
-        }
-
         [Test()]
         public void TestSortBy()
         {

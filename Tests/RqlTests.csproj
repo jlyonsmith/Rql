@@ -45,10 +45,10 @@
   <ItemGroup>
     <Compile Include="RqlParserTests.cs" />
     <Compile Include="RqlTokenizerTests.cs" />
-    <Compile Include="RqlMongoNamespaceTests.cs" />
     <Compile Include="RqlToMongoQueryCompilerTests.cs" />
     <Compile Include="RqlIdTests.cs" />
     <Compile Include="SortSpecToMongoSortByCompilerTests.cs" />
+    <Compile Include="FieldSpecToMongoFieldsCompilerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

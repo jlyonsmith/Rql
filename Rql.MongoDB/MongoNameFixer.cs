@@ -9,8 +9,8 @@ namespace Rql.MongoDB
         {
             field = MongoUtils.ToCamelCase(field);
 
-            if (field == "_id")
-                field = "id";
+            if (field == "id")
+                field = "_id";
 
             return field;
         }

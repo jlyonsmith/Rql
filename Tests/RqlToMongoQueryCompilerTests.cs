@@ -12,44 +12,9 @@ using System.Reflection;
 
 namespace Rql.MongoDB.Tests
 {
-    [RqlName("datas")] // Yes, I know this is not grammatically correct...
-    class Data : IRqlCollection
-    {
-        public ObjectId Id { get; set; }
-        public bool Deleted { get; set; }
-        public string Field { get; set; }
-        public int A { get; set; }
-        public int B { get; set; }
-        public int C { get; set; }
-        public double TheValueOfPi { get; set; }
-        public DateTime When { get; set; }
-        public bool Logical { get; set; }
-        public ObjectId Reference { get; set; }
-        public List<ObjectId> References { get; set; }
-        public OtherData Other { get; set; }
-        public List<OtherData> Others { get; set; }
-        public List<List<int>> Matrix { get; set; }
-        public string Unsettable { get { return ""; } }
-    }
-
-    class OtherData : IRqlDocument
-    {
-        public ObjectId Id { get; set; }
-        public int A { get; set; }
-        public List<double> Numbers { get; set; }
-    }
-
     [TestFixture()]
     public class RqlToMongoQueryCompilerTests
     {
-        private IRqlNamespace RqlNamespace { get; set; }
-
-        [TestFixtureSetUp]
-        public void SetupFixture()
-        {
-            this.RqlNamespace = new RqlMongoNamespace(Assembly.GetExecutingAssembly());
-        }
-
         [Test()]
         public void TestComparisonOps()
         {
@@ -69,8 +34,7 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                string mongo = new RqlToMongoQueryCompiler().Compile(
-                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql).ToString();
+                string mongo = new RqlToMongoQueryCompiler().Compile(pair.Rql).ToString();
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }
@@ -92,8 +56,7 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                string mongo = new RqlToMongoQueryCompiler().Compile(
-                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql).ToString();
+                string mongo = new RqlToMongoQueryCompiler().Compile(pair.Rql).ToString();
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }
@@ -111,17 +74,15 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                string mongo = new RqlToMongoQueryCompiler().Compile(
-                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql).ToString();
+                string mongo = new RqlToMongoQueryCompiler().Compile(pair.Rql).ToString();
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }
         }
 
         [Test()]
-        public void TestTypeCoercion()
+        public void TestAllTypes()
         {
-            // TODO: Test error paths too
             var pairs = new[] 
             {
                 new { Rql = "eq(field,null)", Mongo = "{ \"field\" : null }" },
@@ -137,8 +98,7 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                string mongo = new RqlToMongoQueryCompiler().Compile(
-                    this.RqlNamespace.GetCollectionInfoByName(typeof(Data).Name), pair.Rql).ToString();
+                string mongo = new RqlToMongoQueryCompiler().Compile(pair.Rql).ToString();
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }

@@ -34,12 +34,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="MongoDB.Bson">
-      <HintPath>..\packages\mongocsharpdriver.1.8.3\lib\net35\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\packages\mongocsharpdriver.1.8.3\lib\net35\MongoDB.Driver.dll</HintPath>
-    </Reference>
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
@@ -52,15 +46,8 @@
     <Compile Include="RqlTokenizer.cs" />
     <Compile Include="SortSpec.cs" />
     <Compile Include="SortSpecParser.cs" />
-    <Compile Include="RqlNameAttribute.cs" />
-    <Compile Include="IRqlCollection.cs" />
-    <Compile Include="IRqlNamespace.cs" />
-    <Compile Include="IRqlDocument.cs" />
-    <Compile Include="IRqlCollectionInfo.cs" />
-    <Compile Include="IRqlFieldInfo.cs" />
+    <Compile Include="FieldSpecParser.cs" />
+    <Compile Include="FieldSpec.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
 </Project>

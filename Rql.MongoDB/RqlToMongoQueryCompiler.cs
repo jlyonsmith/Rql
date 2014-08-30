@@ -26,7 +26,6 @@ namespace Rql.MongoDB
         private static Regex hashRegex;
         private StringBuilder sb;
         private RqlExpression exp;
-        private IRqlCollectionInfo collectionInfo;
 
         private static Regex IndexRegex 
         {
@@ -58,18 +57,14 @@ namespace Rql.MongoDB
         {
         }
 
-        public IMongoQuery Compile(IRqlCollectionInfo collectionInfo, string rql)
+        public IMongoQuery Compile(string rql)
         {
-            return Compile(collectionInfo, new RqlParser().Parse(rql));
+            return Compile(new RqlParser().Parse(rql));
         }
 
-        public IMongoQuery Compile(IRqlCollectionInfo collectionInfo, RqlExpression expression)
+        public IMongoQuery Compile(RqlExpression expression)
         {
-            if (collectionInfo == null)
-                throw new ArgumentNullException();
-
             this.exp = expression;
-            this.collectionInfo = collectionInfo;
             this.sb = new StringBuilder();
 
             Visit(exp);
@@ -381,10 +376,8 @@ namespace Rql.MongoDB
 
         protected override RqlExpression VisitIdentifier(RqlIdentifierExpression node)
         {
-            IRqlFieldInfo fieldInfo = collectionInfo.GetFieldInfoByRqlName(node.Name);
-
             sb.Append("\"");
-            sb.Append(fieldInfo.Name);
+            sb.Append(MongoNameFixer.Field(node.Name));
             sb.Append("\": ");
 
             return node;

@@ -8,9 +8,9 @@
     <File>Rql.nuspec</File>
     <File>Rql.MongoDB.nuspec</File>
   </Files>
-  <Major>1</Major>
-  <Minor>3</Minor>
-  <Build>10727</Build>
+  <Major>2</Major>
+  <Minor>0</Minor>
+  <Build>10830</Build>
   <Revision>0</Revision>
   <StartYear>2014</StartYear>
 </Version>

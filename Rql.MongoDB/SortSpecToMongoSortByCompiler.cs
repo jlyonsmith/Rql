@@ -37,17 +37,12 @@ namespace Rql.MongoDB
 
             foreach (var field in sortSpec.Fields)
             {
-                var fieldName = field.Name;
-
-                if (String.CompareOrdinal(field.Name, "$natural") != 0)
-                {
-                    fieldName = MongoNameFixer.Field(field.Name);
-                }
+                var name = MongoNameFixer.Field(field.Name);
 
                 if (field.Order == SortSpecSortOrder.Ascending)
-                    builder.Ascending(MongoUtils.ToCamelCase(fieldName));
+                    builder.Ascending(name);
                 else if (field.Order == SortSpecSortOrder.Descending)
-                    builder.Descending(MongoUtils.ToCamelCase(fieldName));
+                    builder.Descending(name);
             }
 
             return (IMongoSortBy)builder;

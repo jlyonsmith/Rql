@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace Rql
 {
-    // TODO: Need unit tests for this class
-
     public class SortSpecParserException : Exception
     {
         public SortSpecParserException(string message) : base(message)
@@ -49,10 +47,15 @@ namespace Rql
 
                 RqlConstantExpression constExp = funcExp.Arguments[0] as RqlConstantExpression;
 
-                if (constExp == null || !(constExp.Value is Int32) || ((int)constExp.Value != 1 && (int)constExp.Value != -1))
+                if (constExp == null || !(constExp.Value is Int32))
+                    throw new SortSpecParserException("Sort specification value must be an integer");
+
+                var value = (int)constExp.Value;
+
+                if (value != 1 && value != -1)
                     throw new SortSpecParserException("Sort specification value must be 1 or -1");
 
-                fields.Add(new SortSpecField(funcExp.Name, (int)constExp.Value == 1 ? SortSpecSortOrder.Ascending : SortSpecSortOrder.Descending));
+                fields.Add(new SortSpecField(funcExp.Name, value == 1 ? SortSpecSortOrder.Ascending : SortSpecSortOrder.Descending));
             }
 
             return new SortSpec(fields);

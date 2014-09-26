@@ -7,6 +7,7 @@ namespace Rql
     {
         private TimeSpan timeSpan;
 
+        // See http://en.wikipedia.org/wiki/ISO_8601#Durations
         public static readonly string FormatPattern = @"'P'd'D''T'hh'H'mm'M'ss'.'fff'S'";
 
         public RqlTimeSpan(TimeSpan timeSpan) : this()

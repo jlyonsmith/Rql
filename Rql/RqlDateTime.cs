@@ -33,7 +33,7 @@ namespace Rql
             InternalParse(s);
         }
 
-        #region IFormattable implementation
+        #region IFormattable
 
         public string ToString(string format, IFormatProvider formatProvider)
         {

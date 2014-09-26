@@ -159,7 +159,7 @@ namespace Rql
             if (!s.StartsWith("$"))
                 throw new ArgumentException("RQL id must start with '$' symbol");
 
-            BigInteger n;
+            BigInteger n = 0;
             BigInteger m = 1;
             int len = s.Length;
 

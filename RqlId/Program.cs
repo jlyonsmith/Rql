@@ -11,11 +11,12 @@ namespace Rql.Tools
     {
         public static void Main(string[] args)
         {
-            if (args.Length == 1 && (args[0] == "-?" || args[0] == "--help" || args[0] == "-h"))
+            if (args.Length == 0 || (args.Length == 1 && (args[0] == "-?" || args[0] == "--help" || args[0] == "-h")))
             {
                 Console.WriteLine("usage: {0} <id>", Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location));
                 Console.WriteLine();
                 Console.WriteLine("Give the id in RQL or MongoDB format, e.g. $1234 or ObjectId(\"51d1e6baec98e811b7ee9d20\").  The program will show the other.");
+                return;
             }
 
             string id = args[0];

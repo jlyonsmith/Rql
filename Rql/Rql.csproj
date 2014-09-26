@@ -48,6 +48,7 @@
     <Compile Include="SortSpecParser.cs" />
     <Compile Include="FieldSpecParser.cs" />
     <Compile Include="FieldSpec.cs" />
+    <Compile Include="RqlTimeSpan.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

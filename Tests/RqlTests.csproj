@@ -49,6 +49,8 @@
     <Compile Include="RqlIdTests.cs" />
     <Compile Include="SortSpecToMongoSortByCompilerTests.cs" />
     <Compile Include="FieldSpecToMongoFieldsCompilerTests.cs" />
+    <Compile Include="RqlDateTimeTests.cs" />
+    <Compile Include="RqlTimeSpanTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

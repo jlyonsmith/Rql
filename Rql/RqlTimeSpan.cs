@@ -44,10 +44,10 @@ namespace Rql
             {
             case "n":
                 return this.timeSpan.ToString(FormatPattern);
-            case "@":
+            case "~":
             case "G":
             default:
-                return "@" + this.timeSpan.ToString(FormatPattern);
+                return "~" + this.timeSpan.ToString(FormatPattern);
             }
         }
 
@@ -76,7 +76,7 @@ namespace Rql
         public void InternalParse(string s)
         {
             if (!s.StartsWith("~"))
-                throw new ArgumentException("RQL date/time must start with '~' symbol");
+                throw new ArgumentException("RQL date/time must start with '~'");
 
             if (s.Length > 1)
                 this.timeSpan = TimeSpan.ParseExact(s.Substring(1), RqlTimeSpan.FormatPattern, CultureInfo.InvariantCulture);

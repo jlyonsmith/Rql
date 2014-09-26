@@ -43,6 +43,9 @@ namespace Rql.Tests
         {
             var originalTimeSpan = new TimeSpan(0, 1, 45, 27, 222);
             var rqlTimeSpan = new RqlTimeSpan(originalTimeSpan);
+
+            Assert.AreEqual("~P0DT01H45M27.222S", rqlTimeSpan.ToString());
+
             var timeSpan = (TimeSpan)rqlTimeSpan;
 
             Assert.AreEqual(0, timeSpan.Days);

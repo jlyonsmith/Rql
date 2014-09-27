@@ -51,6 +51,7 @@
     <Compile Include="FieldSpecToMongoFieldsCompilerTests.cs" />
     <Compile Include="RqlDateTimeTests.cs" />
     <Compile Include="RqlTimeSpanTests.cs" />
+    <Compile Include="TimeSpanSerializerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

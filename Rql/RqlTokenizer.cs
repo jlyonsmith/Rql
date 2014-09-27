@@ -249,6 +249,25 @@ namespace Rql
                 if (RqlDateTime.TryParse(sb.ToString(), out dateTime))
                     return RqlToken.Constant(tokenOffset, dateTime);
             }
+            else if (c == '~')
+            {
+                sb.Clear();
+                sb.Append(c);
+                c = ReadChar();
+
+                while (c != 'S')
+                {
+                    sb.Append(c);
+                    c = ReadChar();
+                }
+
+                sb.Append(c);
+
+                RqlTimeSpan timeSpan;
+
+                if (RqlTimeSpan.TryParse(sb.ToString(), out timeSpan))
+                    return RqlToken.Constant(tokenOffset, timeSpan);
+            }
             else if (c == '\'')
             {
                 sb.Clear();

@@ -18,9 +18,9 @@ namespace Rql.Tests
         [Test]
         public void TestGoodExpression()
         {
-                                                     //0000000000111111111122222222223333333333444444444455555555556666666666777777777788888888889999999999
-                                                     //0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
-            RqlTokenizer tokenizer = new RqlTokenizer("  foo ( a1b2, 123.45, 'xyz',bar(true,false,null),123,-1,$51d1e6,@2013-06-24T15:30:00Z,tit.tat.1) ");
+                                                     //000000000011111111112222222222333333333344444444445555555555666666666677777777778888888888999999999900000000001111111111
+                                                     //012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+            RqlTokenizer tokenizer = new RqlTokenizer("  foo ( a1b2, 123.45, 'xyz',bar(true,false,null),123,-1,$51d1e6,@2013-06-24T15:30:00Z,~P1DT02H57M16.001S,tit.tat.1) ");
 
             RqlToken[] expectedTokens = 
             {
@@ -49,9 +49,11 @@ namespace Rql.Tests
                 new RqlToken(RqlTokenType.Comma, 63),
                 new RqlToken(RqlTokenType.Constant, 64, new RqlDateTime("@2013-06-24T15:30:00Z")),
                 new RqlToken(RqlTokenType.Comma, 85),
-                new RqlToken(RqlTokenType.Identifier, 86, "tit.tat.1"),
-                new RqlToken(RqlTokenType.RightParen, 95),
-                new RqlToken(RqlTokenType.End, 98),
+                new RqlToken(RqlTokenType.Constant, 86, new RqlTimeSpan("~P1DT02H57M16.001S")),
+                new RqlToken(RqlTokenType.Comma, 104),
+                new RqlToken(RqlTokenType.Identifier, 105, "tit.tat.1"),
+                new RqlToken(RqlTokenType.RightParen, 114),
+                new RqlToken(RqlTokenType.End, 117),
             };
 
             RqlToken token = tokenizer.PeekNext();

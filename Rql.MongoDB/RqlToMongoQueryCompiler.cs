@@ -310,6 +310,7 @@ namespace Rql.MongoDB
             object nodeValue = node.Value;
             Type nodeType = node.Type;
 
+            // Convert RQL types into primitive types
             if (nodeType == typeof(RqlId))
             {
                 nodeValue = ((RqlId)nodeValue).ToObjectId();
@@ -320,7 +321,13 @@ namespace Rql.MongoDB
                 nodeValue = (DateTime)(RqlDateTime)nodeValue;
                 nodeType = nodeValue.GetType();
             }
+            else if (nodeType == typeof(RqlTimeSpan))
+            {
+                nodeValue = (TimeSpan)(RqlTimeSpan)nodeValue;
+                nodeType = nodeValue.GetType();
+            }
 
+            // Now convert the primitive into the MongoDB type
             if (nodeValue == null)
             {
                 sb.Append("null");
@@ -344,6 +351,10 @@ namespace Rql.MongoDB
                 sb.Append("ISODate(\"");
                 sb.Append(((DateTime)nodeValue).ToString(RqlDateTime.FormatPattern));
                 sb.Append("\")");
+            }
+            else if (nodeType == typeof(TimeSpan))
+            {
+                sb.Append(((TimeSpan)nodeValue).TotalMilliseconds.ToString());
             }
             else if (nodeType == typeof(double))
             {

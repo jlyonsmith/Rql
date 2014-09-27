@@ -37,6 +37,7 @@
     <Reference Include="MongoDB.Driver">
       <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -46,6 +47,7 @@
     <Compile Include="RqlIdExtensions.cs" />
     <Compile Include="MongoNameFixer.cs" />
     <Compile Include="FieldSpecToMongoFieldsCompiler.cs" />
+    <Compile Include="TimeSpanSerializer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

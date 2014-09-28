@@ -27,6 +27,10 @@ namespace Rql.MongoDB
             case BsonType.Null:
                 bsonReader.ReadNull();
                 return null;
+            case BsonType.Int32:
+                return TimeSpan.FromMilliseconds((double)bsonReader.ReadInt32());
+            case BsonType.Int64:
+                return TimeSpan.FromMilliseconds((double)bsonReader.ReadInt64());
             case BsonType.Double:
                 return TimeSpan.FromMilliseconds(bsonReader.ReadDouble());
             default:

@@ -9,11 +9,11 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("Release")]
 #endif 
 [assembly: AssemblyCompany("John Lyon-Smith")]
-[assembly: AssemblyProduct("RQL")]
-[assembly: AssemblyCopyright("Copyright (c), John Lyon-Smith.")]
+[assembly: AssemblyProduct("REST Query Language")]
+[assembly: AssemblyCopyright("Copyright (c) 2015, John Lyon-Smith")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.20315.0")]
+[assembly: AssemblyFileVersion("2.0.20315.1")]
 
 

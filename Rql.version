@@ -13,4 +13,7 @@
   <Build>20315</Build>
   <Revision>0</Revision>
   <StartYear>2014</StartYear>
+  <Company>John Lyon-Smith</Company>
+  <Product>REST Query Language</Product>
+  <Copyright>Copyright (c) 2015, John Lyon-Smith</Copyright>
 </Version>

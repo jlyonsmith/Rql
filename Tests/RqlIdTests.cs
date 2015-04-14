@@ -43,17 +43,17 @@ namespace Rql.Tests
             var objIds = new ObjectId[]
             {
                 ObjectId.Empty,
-                new ObjectId(DateTime.MinValue, 0, 0, 0),
-                new ObjectId(DateTime.MinValue, 100, 200, 65535),
-                new ObjectId(DateTime.MaxValue, 0xffffff, short.MaxValue, 0xffffff),
+                new ObjectId(0, 0, 0, 0),
+                new ObjectId(0, 100, 200, 65535),
+                new ObjectId(int.MaxValue, 0xffffff, short.MaxValue, 0xffffff),
             };
 
             var rqlIds = new RqlId[]
             {
                 new RqlId("$0"),
-                new RqlId("$24"),
-                new RqlId("$1F2mgA9gNyZtkTIf6"),
-                new RqlId("$1F2si9jk4p8vTbfmU")
+                new RqlId("$0"),
+                new RqlId("$1F2mgA9gNyZtkTId2"),
+                new RqlId("$1F2si9jk4p8AzQuuP")
             };
 
             for (int i = 0; i < objIds.Length; i++)
@@ -73,7 +73,7 @@ namespace Rql.Tests
             var rqlIds = new RqlId[]
             {
                 new RqlId("$0"),
-                new RqlId("$24"),
+                new RqlId("$0"),
                 new RqlId("$1F2mgA9gNyZtkTIf6"),
                 new RqlId("$1Ad4Xro7A6yeAl77J")  // This one caused problems
 
@@ -82,8 +82,8 @@ namespace Rql.Tests
             var objIds = new ObjectId[]
             {
                 ObjectId.Empty,
-                new ObjectId(DateTime.MinValue, 0, 0, 0),
-                new ObjectId(DateTime.MinValue, 100, 200, 65535),
+                new ObjectId(0, 0, 0, 0),
+                new ObjectId("8000000000006400c800ffff"),
                 new ObjectId("53d5244dec98e866c0d800f4")
             };
 

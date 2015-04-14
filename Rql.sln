@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{22
 	ProjectSection(SolutionItems) = preProject
 		Rql.version = Rql.version
 		Rql.version.config = Rql.version.config
+		Rql.MongoDB.nuspec = Rql.MongoDB.nuspec
 	EndProjectSection
 EndProject
 Global
@@ -39,8 +40,5 @@ Global
 		{E09CAA07-E704-4DFA-B18C-E21D3715249B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = RqlId\RqlId.csproj
 	EndGlobalSection
 EndGlobal

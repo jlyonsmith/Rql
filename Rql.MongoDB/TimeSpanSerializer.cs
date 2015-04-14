@@ -7,51 +7,39 @@ using MongoDB.Bson;
 
 namespace Rql.MongoDB
 {
-    public class TimeSpanSerializer : BsonBaseSerializer
+    public class TimeSpanSerializer : SerializerBase<TimeSpan>
     {
         public TimeSpanSerializer()
         {
         }
 
-        public override object Deserialize(
-            BsonReader bsonReader,
-            Type nominalType,
-            Type actualType,
-            IBsonSerializationOptions options)
+        public override TimeSpan Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            VerifyTypes(nominalType, actualType, typeof(TimeSpan));
+            IBsonReader reader = context.Reader;
+            BsonType bsonType = reader.GetCurrentBsonType();
 
-            var bsonType = bsonReader.GetCurrentBsonType();
             switch (bsonType)
             {
             case BsonType.Null:
-                bsonReader.ReadNull();
-                return null;
+                reader.ReadNull();
+                return TimeSpan.Zero;
             case BsonType.Int32:
-                return TimeSpan.FromMilliseconds((double)bsonReader.ReadInt32());
+                return TimeSpan.FromMilliseconds((double)reader.ReadInt32());
             case BsonType.Int64:
-                return TimeSpan.FromMilliseconds((double)bsonReader.ReadInt64());
+                return TimeSpan.FromMilliseconds((double)reader.ReadInt64());
             case BsonType.Double:
-                return TimeSpan.FromMilliseconds(bsonReader.ReadDouble());
+                return TimeSpan.FromMilliseconds(reader.ReadDouble());
             default:
-                var message = string.Format("Cannot deserialize TimeSpan from BsonType {0}.", bsonType);
-                throw new FileFormatException(message);
+                throw base.CreateCannotDeserializeFromBsonTypeException(bsonType);
             }
         }
 
-        public override void Serialize(
-            BsonWriter bsonWriter,
-            Type nominalType,
-            object value,
-            IBsonSerializationOptions options)
+        public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TimeSpan value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException("value");
-            }
-
+            IBsonWriter writer = context.Writer;
             var bsonDouble = new BsonDouble(((TimeSpan)value).TotalMilliseconds);
-            bsonWriter.WriteDouble(bsonDouble.Value);
+
+            writer.WriteDouble(bsonDouble.Value);
         }
     }
 }

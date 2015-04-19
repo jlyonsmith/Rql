@@ -9,7 +9,7 @@
     <projectUrl>http://github.com/jlyonsmith/Rql</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>RQL binding for MongoDB.</description>
-    <releaseNotes>Interim fix release for MongoDB 2.0 C# Driver</releaseNotes>
+    <releaseNotes>Full support for MongoDB C# 2.0 driver</releaseNotes>
     <copyright>Copyright (C) 2015 John Lyon-Smith</copyright>
     <tags>mongodb driver extension query mono osx linux</tags>
   </metadata>

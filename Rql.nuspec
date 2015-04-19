@@ -8,7 +8,7 @@
     <licenseUrl>http://github.com/jlyonsmith/Rql/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>http://github.com/jlyonsmith/Rql</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>REST Query Language (RQL).  A simple, extensible query languaged for REST API's.</description>
+    <description>REST Query Language (RQL). A simple, extensible query languaged for REST API's.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright (C) 2014 John Lyon-Smith</copyright>
     <tags>mongodb rest api query sql mysql mono osx linux</tags>

@@ -3,7 +3,8 @@ using System;
 using Rql;
 using Rql.MongoDB;
 using System.Reflection;
-using MongoDB.Driver.Builders;
+using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace Rql.MongoDB.Tests
 {
@@ -15,16 +16,21 @@ namespace Rql.MongoDB.Tests
         {
             var pairs = new[] 
             {
-                new { Fields = "", Mongo = "" },
+                new { Fields = "", Mongo = "{ }" },
                 new { Fields = "name(1),age(1)", Mongo = "{ \"name\" : 1, \"age\" : 1 }" },
                 new { Fields = "id(0),age(1)", Mongo = "{ \"_id\" : 0, \"age\" : 1 }" },
+                new { Fields = "textScore(1)", Mongo = "{ \"textScore\" : { \"$meta\" : \"textScore\" } }" },
             };
 
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                var fields = new FieldSpecToMongoFieldsCompiler().Compile(pair.Fields);
-                string mongo = (fields == Fields.Null ? "" : fields.ToString());
+                var definition = new FieldSpecToProjectionDefinition().Compile(pair.Fields);
+                var doc = definition as BsonDocumentProjectionDefinition<BsonDocument>;
+
+                Assert.NotNull(doc);
+
+                string mongo = (doc == null ? "" : doc.Document.ToString());
 
                 Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
             }
@@ -43,7 +49,7 @@ namespace Rql.MongoDB.Tests
             {
                 var pair = pairs[i];
 
-                Assert.Throws<FieldSpecParserException>(() => new FieldSpecToMongoFieldsCompiler().Compile(pair.Fields));
+                Assert.Throws<FieldSpecParserException>(() => new FieldSpecToProjectionDefinition().Compile(pair.Fields));
             }
         }
     }

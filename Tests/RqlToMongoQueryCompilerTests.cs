@@ -6,7 +6,6 @@ using Rql.MongoDB;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Linq;
-using MongoDB.Driver.Builders;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -34,9 +33,11 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                string mongo = new RqlToMongoQueryCompiler().Compile(pair.Rql).ToString();
+                var filter = new RqlToMongoFilterDefinition().Compile(pair.Rql);
+                var doc = filter as BsonDocumentFilterDefinition<BsonDocument>;
 
-                Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
+                Assert.NotNull(doc);
+                Assert.AreEqual(pair.Mongo, doc.Document.ToString(), String.Format("Iteration {0}", i));
             }
         }
         
@@ -56,9 +57,11 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                string mongo = new RqlToMongoQueryCompiler().Compile(pair.Rql).ToString();
+                var filter = new RqlToMongoFilterDefinition().Compile(pair.Rql);
+                var doc = filter as BsonDocumentFilterDefinition<BsonDocument>;
 
-                Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
+                Assert.NotNull(doc);
+                Assert.AreEqual(pair.Mongo, doc.Document.ToString(), String.Format("Iteration {0}", i));
             }
         }
 
@@ -74,9 +77,11 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                string mongo = new RqlToMongoQueryCompiler().Compile(pair.Rql).ToString();
+                var filter = new RqlToMongoFilterDefinition().Compile(pair.Rql);
+                var doc = filter as BsonDocumentFilterDefinition<BsonDocument>;
 
-                Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
+                Assert.NotNull(doc);
+                Assert.AreEqual(pair.Mongo, doc.Document.ToString(), String.Format("Iteration {0}", i));
             }
         }
 
@@ -98,9 +103,11 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                string mongo = new RqlToMongoQueryCompiler().Compile(pair.Rql).ToString();
+                var filter = new RqlToMongoFilterDefinition().Compile(pair.Rql);
+                var doc = filter as BsonDocumentFilterDefinition<BsonDocument>;
 
-                Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
+                Assert.NotNull(doc);
+                Assert.AreEqual(pair.Mongo, doc.Document.ToString(), String.Format("Iteration {0}", i));
             }
         }
     }

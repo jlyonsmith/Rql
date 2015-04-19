@@ -3,7 +3,8 @@ using System;
 using Rql;
 using Rql.MongoDB;
 using System.Reflection;
-using MongoDB.Driver.Builders;
+using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace Rql.MongoDB.Tests
 {
@@ -15,17 +16,18 @@ namespace Rql.MongoDB.Tests
         {
             var pairs = new[] 
             {
-                new { SortBy = "", Mongo = "" },
+                new { SortBy = "", Mongo = "{ }" },
                 new { SortBy = "name(1),age(-1)", Mongo = "{ \"name\" : 1, \"age\" : -1 }" },
             };
 
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                var sortBy = new SortSpecToMongoSortByCompiler().Compile(pair.SortBy);
-                string mongo = (sortBy == SortBy.Null ? "" : sortBy.ToString());
+                var sort = new SortSpecToSortDefinition().Compile(pair.SortBy);
+                var doc = sort as BsonDocumentSortDefinition<BsonDocument>;
 
-                Assert.AreEqual(pair.Mongo, mongo, String.Format("Iteration {0}", i));
+                Assert.NotNull(doc);
+                Assert.AreEqual(pair.Mongo, doc.Document.ToString(), String.Format("Iteration {0}", i));
             }
         }
 
@@ -34,15 +36,15 @@ namespace Rql.MongoDB.Tests
         {
             var pairs = new[] 
             {
-                new { SortBy = "name()" },
-                new { SortBy = "name(2)" },
+                new { Sort = "name()" },
+                new { Sort = "name(2)" },
             };
 
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
 
-                Assert.Throws<SortSpecParserException>(() => new SortSpecToMongoSortByCompiler().Compile(pair.SortBy));
+                Assert.Throws<SortSpecParserException>(() => new SortSpecToSortDefinition().Compile(pair.Sort));
             }
         }
     }

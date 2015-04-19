@@ -41,19 +41,16 @@
     <Reference Include="MongoDB.Driver">
       <HintPath>..\packages\MongoDB.Driver.2.0.0\lib\net45\MongoDB.Driver.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Driver.Legacy">
-      <HintPath>..\packages\mongocsharpdriver.2.0.0\lib\net45\MongoDB.Driver.Legacy.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RqlToMongoQueryCompiler.cs" />
-    <Compile Include="SortSpecToMongoSortByCompiler.cs" />
     <Compile Include="ObjectIdExtensions.cs" />
     <Compile Include="RqlIdExtensions.cs" />
     <Compile Include="MongoNameFixer.cs" />
-    <Compile Include="FieldSpecToMongoFieldsCompiler.cs" />
     <Compile Include="TimeSpanSerializer.cs" />
+    <Compile Include="FieldSpecToProjectionDefinition.cs" />
+    <Compile Include="RqlToMongoFilterDefinition.cs" />
+    <Compile Include="SortSpecToSortDefinition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

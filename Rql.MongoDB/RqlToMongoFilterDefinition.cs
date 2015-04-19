@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Globalization;
 using MongoDB.Bson;
-using MongoDB.Driver.Builders;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization;
 using Rql;
@@ -20,7 +19,7 @@ namespace Rql.MongoDB
         }
     }
 
-    public class RqlToMongoQueryCompiler : RqlExpressionVisitor
+    public class RqlToMongoFilterDefinition : RqlExpressionVisitor
     {
         private static Regex indexRegex;
         private static Regex hashRegex;
@@ -53,16 +52,16 @@ namespace Rql.MongoDB
             }
         }
 
-        public RqlToMongoQueryCompiler()
+        public RqlToMongoFilterDefinition()
         {
         }
 
-        public IMongoQuery Compile(string rql)
+        public FilterDefinition<BsonDocument> Compile(string rql)
         {
             return Compile(new RqlParser().Parse(rql));
         }
 
-        public IMongoQuery Compile(RqlExpression expression)
+        public FilterDefinition<BsonDocument> Compile(RqlExpression expression)
         {
             this.exp = expression;
             this.sb = new StringBuilder();
@@ -70,13 +69,13 @@ namespace Rql.MongoDB
             Visit(exp);
 
             string s = sb.ToString();
-            IMongoQuery query = Query.Null;
+            FilterDefinition<BsonDocument> filter = null;
 
             if (!String.IsNullOrEmpty(s))
             {
                 try
                 {
-                    query = new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(s));
+                    filter = new BsonDocumentFilterDefinition<BsonDocument>(BsonSerializer.Deserialize<BsonDocument>(s));
                 }
                 catch
                 {
@@ -86,7 +85,7 @@ namespace Rql.MongoDB
 
             this.sb = null;
 
-            return query;
+            return filter;
         }
 
         private void ThrowError(RqlExpression node, string format, params object[] args)

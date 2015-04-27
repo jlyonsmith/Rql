@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B58DFA71-AB06-43DA-92AC-A1AC2D69C5DD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Rql</RootNamespace>

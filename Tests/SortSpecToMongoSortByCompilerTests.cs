@@ -16,14 +16,14 @@ namespace Rql.MongoDB.Tests
         {
             var pairs = new[] 
             {
-                new { SortBy = "", Mongo = "{ }" },
+                new { SortBy = "", Mongo = "{ \"$natural\" : 1 }" },
                 new { SortBy = "name(1),age(-1)", Mongo = "{ \"name\" : 1, \"age\" : -1 }" },
             };
 
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                var sort = new SortSpecToSortDefinition().Compile(pair.SortBy);
+                var sort = new SortSpecToSortDefinition().Compile<BsonDocument>(pair.SortBy);
                 var doc = sort as BsonDocumentSortDefinition<BsonDocument>;
 
                 Assert.NotNull(doc);
@@ -44,7 +44,7 @@ namespace Rql.MongoDB.Tests
             {
                 var pair = pairs[i];
 
-                Assert.Throws<SortSpecParserException>(() => new SortSpecToSortDefinition().Compile(pair.Sort));
+                Assert.Throws<SortSpecParserException>(() => new SortSpecToSortDefinition().Compile<BsonDocument>(pair.Sort));
             }
         }
     }

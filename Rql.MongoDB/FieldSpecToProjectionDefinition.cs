@@ -17,15 +17,15 @@ namespace Rql.MongoDB
         {
         }
 
-        public ProjectionDefinition<BsonDocument> Compile(string fieldSpec)
+        public ProjectionDefinition<T, T> Compile<T>(string fieldSpec)
         {
             if (String.IsNullOrEmpty(fieldSpec))
-                return new BsonDocumentProjectionDefinition<BsonDocument>(new BsonDocument());
+                return new BsonDocumentProjectionDefinition<T, T>(new BsonDocument());
 
-            return Compile(new FieldSpecParser().Parse(fieldSpec));
+            return Compile<T>(new FieldSpecParser().Parse(fieldSpec));
         }
 
-        public ProjectionDefinition<BsonDocument> Compile(FieldSpec fieldSpec)
+        public ProjectionDefinition<T, T> Compile<T>(FieldSpec fieldSpec)
         {
             var sb = new StringBuilder();
 
@@ -55,7 +55,7 @@ namespace Rql.MongoDB
 
             sb.Append(" }");
 
-            return new BsonDocumentProjectionDefinition<BsonDocument>(BsonSerializer.Deserialize<BsonDocument>(sb.ToString()));
+            return new BsonDocumentProjectionDefinition<T, T>(BsonSerializer.Deserialize<BsonDocument>(sb.ToString()));
         }
     }
 }

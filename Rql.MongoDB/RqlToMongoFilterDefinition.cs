@@ -56,12 +56,12 @@ namespace Rql.MongoDB
         {
         }
 
-        public FilterDefinition<BsonDocument> Compile(string rql)
+        public FilterDefinition<T> Compile<T>(string rql)
         {
-            return Compile(new RqlParser().Parse(rql));
+            return Compile<T>(new RqlParser().Parse(rql));
         }
 
-        public FilterDefinition<BsonDocument> Compile(RqlExpression expression)
+        public FilterDefinition<T> Compile<T>(RqlExpression expression)
         {
             this.exp = expression;
             this.sb = new StringBuilder();
@@ -69,13 +69,13 @@ namespace Rql.MongoDB
             Visit(exp);
 
             string s = sb.ToString();
-            FilterDefinition<BsonDocument> filter = null;
+            FilterDefinition<T> filter = null;
 
             if (!String.IsNullOrEmpty(s))
             {
                 try
                 {
-                    filter = new BsonDocumentFilterDefinition<BsonDocument>(BsonSerializer.Deserialize<BsonDocument>(s));
+                    filter = new BsonDocumentFilterDefinition<T>(BsonSerializer.Deserialize<BsonDocument>(s));
                 }
                 catch
                 {

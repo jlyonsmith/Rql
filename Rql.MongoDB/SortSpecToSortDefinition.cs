@@ -17,15 +17,15 @@ namespace Rql.MongoDB
         {
         }
 
-        public SortDefinition<BsonDocument> Compile(string sortSpec)
+        public SortDefinition<T> Compile<T>(string sortSpec)
         {
             if (String.IsNullOrEmpty(sortSpec))
-                return new BsonDocumentSortDefinition<BsonDocument>(new BsonDocument());
+                return new BsonDocumentSortDefinition<T>(new BsonDocument("$natural", new BsonInt32(1)));
 
-            return Compile(new SortSpecParser().Parse(sortSpec));
+            return Compile<T>(new SortSpecParser().Parse(sortSpec));
         }
 
-        public SortDefinition<BsonDocument> Compile(SortSpec sortSpec)
+        public SortDefinition<T> Compile<T>(SortSpec sortSpec)
         {
             var sb = new StringBuilder();
 
@@ -44,7 +44,7 @@ namespace Rql.MongoDB
 
             sb.Append(" }");
 
-            return new BsonDocumentSortDefinition<BsonDocument>(BsonSerializer.Deserialize<BsonDocument>(sb.ToString()));
+            return new BsonDocumentSortDefinition<T>(BsonSerializer.Deserialize<BsonDocument>(sb.ToString()));
         }
     }
 }

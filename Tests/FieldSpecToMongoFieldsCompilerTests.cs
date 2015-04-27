@@ -25,8 +25,8 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                var definition = new FieldSpecToProjectionDefinition().Compile(pair.Fields);
-                var doc = definition as BsonDocumentProjectionDefinition<BsonDocument>;
+                var definition = new FieldSpecToProjectionDefinition().Compile<BsonDocument>(pair.Fields);
+                var doc = definition as BsonDocumentProjectionDefinition<BsonDocument, BsonDocument>;
 
                 Assert.NotNull(doc);
 
@@ -49,7 +49,7 @@ namespace Rql.MongoDB.Tests
             {
                 var pair = pairs[i];
 
-                Assert.Throws<FieldSpecParserException>(() => new FieldSpecToProjectionDefinition().Compile(pair.Fields));
+                Assert.Throws<FieldSpecParserException>(() => new FieldSpecToProjectionDefinition().Compile<BsonDocument>(pair.Fields));
             }
         }
     }

@@ -33,7 +33,7 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                var filter = new RqlToMongoFilterDefinition().Compile(pair.Rql);
+                var filter = new RqlToMongoFilterDefinition().Compile<BsonDocument>(pair.Rql);
                 var doc = filter as BsonDocumentFilterDefinition<BsonDocument>;
 
                 Assert.NotNull(doc);
@@ -57,7 +57,7 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                var filter = new RqlToMongoFilterDefinition().Compile(pair.Rql);
+                var filter = new RqlToMongoFilterDefinition().Compile<BsonDocument>(pair.Rql);
                 var doc = filter as BsonDocumentFilterDefinition<BsonDocument>;
 
                 Assert.NotNull(doc);
@@ -77,7 +77,7 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                var filter = new RqlToMongoFilterDefinition().Compile(pair.Rql);
+                var filter = new RqlToMongoFilterDefinition().Compile<BsonDocument>(pair.Rql);
                 var doc = filter as BsonDocumentFilterDefinition<BsonDocument>;
 
                 Assert.NotNull(doc);
@@ -103,7 +103,7 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                var filter = new RqlToMongoFilterDefinition().Compile(pair.Rql);
+                var filter = new RqlToMongoFilterDefinition().Compile<BsonDocument>(pair.Rql);
                 var doc = filter as BsonDocumentFilterDefinition<BsonDocument>;
 
                 Assert.NotNull(doc);

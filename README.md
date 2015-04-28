@@ -12,6 +12,4 @@ For example, MongoDB allows the execution of Javascript directly on the database
 
 The project API and the MongoDB binding are documented in the [Wiki](https://github.com/jlyonsmith/Rql/wiki).
 
----
-
-John Lyon-Smith, 2014.
+[![Build Status](https://travis-ci.org/jlyonsmith/Rql.svg?branch=master)](https://travis-ci.org/jlyonsmith/Rql)

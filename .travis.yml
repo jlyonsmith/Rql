@@ -14,7 +14,7 @@ env:
 
 install:
   - nuget restore Rql.sln
-  - nuget install NUnit.Runners -Version 2.6.4
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory packages
 
 script:
   - xbuild /p:Configuration=Debug Rql.sln

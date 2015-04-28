@@ -1,0 +1,23 @@
+language: csharp
+
+mono:
+  - latest
+
+solution: Rql.sln
+
+services:
+  - mongodb
+
+env:
+  global:
+    - EnableNuGetPackageRestore=true 
+
+install:
+  - nuget restore Rql.sln
+  - nuget install NUnit.Runners -Version 2.6.4
+
+script:
+  - xbuild /p:Configuration=Debug Rql.sln
+  - xbuild /p:Configuration=Release Rql.sln
+  - mono ./packages/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Rql.Tests/bin/Debug/RqlTests.dll
+  - mono ./packages/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Rql.Tests/bin/Release/RqlTests.dll

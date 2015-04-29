@@ -12,6 +12,12 @@
     <releaseNotes>Full support for MongoDB C# 2.0 driver</releaseNotes>
     <copyright>Copyright (C) 2015 John Lyon-Smith</copyright>
     <tags>mongodb driver extension query mono osx linux</tags>
+    <dependencies>
+	  <dependency id="MongoDB.Bson" version="2.0.0" />
+	  <dependency id="MongoDB.Driver" version="2.0.0" />
+	  <dependency id="MongoDB.Driver.Core" version="2.0.0" />
+      <dependency id="Rql" version="3.0.10427.0" />
+    </dependencies>
   </metadata>
   <files>
     <file src="Rql.MongoDB/bin/Release/Rql.MongoDB.dll" target="lib/net45" /> 

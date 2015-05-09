@@ -53,6 +53,19 @@ namespace Rql
 
         #endregion
 
+        public override bool Equals(object obj)
+        {
+            if (!(obj is RqlTimeSpan))
+                return false;
+            
+            return this.Equals((RqlTimeSpan)obj);
+        }
+
+        public bool Equals(RqlTimeSpan other)
+        {
+            return this.timeSpan.Equals(other.timeSpan);
+        }
+
         public override string ToString()
         {
             return ToString(null, null);

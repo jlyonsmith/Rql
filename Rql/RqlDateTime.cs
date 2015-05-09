@@ -7,7 +7,7 @@ namespace Rql
     {
         private DateTime dateTime;
 
-        public static readonly string FormatPattern = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+        public static readonly string FormatPattern = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'";
 
         public RqlDateTime(DateTime dateTime) : this()
         {
@@ -64,6 +64,24 @@ namespace Rql
         public override string ToString()
         {
             return ToString(null, null);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is RqlDateTime))
+                return false;
+
+            return this.Equals((RqlDateTime)obj);
+        }
+
+        public bool Equals(RqlDateTime other)
+        {
+            return dateTime.Equals(other.dateTime);
+        }
+
+        public override int GetHashCode()
+        {
+            return dateTime.GetHashCode();
         }
 
         public string ToString(string format)
@@ -124,7 +142,11 @@ namespace Rql
         {
             get 
             {
-                return new RqlDateTime(DateTime.UtcNow);
+                var now = DateTime.UtcNow;
+
+                // Necessary in order to avoid sub-millisecond part of the DateTime
+                return new RqlDateTime(DateTime.SpecifyKind(new DateTime(
+                    now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second, now.Millisecond), DateTimeKind.Utc));
             }
         }
     }

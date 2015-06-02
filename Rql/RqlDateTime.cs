@@ -7,7 +7,7 @@ namespace Rql
     {
         private DateTime dateTime;
 
-        public static readonly string FormatPattern = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'";
+        public static readonly string FormatPattern = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFF'Z'";
 
         public RqlDateTime(DateTime dateTime) : this()
         {

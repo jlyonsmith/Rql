@@ -19,7 +19,7 @@ namespace Rql.MongoDB
         }
     }
 
-    public class RqlToMongoFilterDefinition : RqlExpressionVisitor
+    public class RqlToFilterDefinition : RqlExpressionVisitor
     {
         private static Regex indexRegex;
         private static Regex hashRegex;
@@ -52,7 +52,7 @@ namespace Rql.MongoDB
             }
         }
 
-        public RqlToMongoFilterDefinition()
+        public RqlToFilterDefinition()
         {
         }
 

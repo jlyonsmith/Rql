@@ -9,7 +9,7 @@ using MongoDB.Bson;
 namespace Rql.MongoDB.Tests
 {
     [TestFixture]
-    public class SortSpecToMongoSortByCompilerTests
+    public class SortSpecToSortDefinitionTests
     {
         [Test()]
         public void TestSortBy()

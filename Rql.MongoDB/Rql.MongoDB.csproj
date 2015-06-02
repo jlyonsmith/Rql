@@ -49,8 +49,8 @@
     <Compile Include="MongoNameFixer.cs" />
     <Compile Include="TimeSpanSerializer.cs" />
     <Compile Include="FieldSpecToProjectionDefinition.cs" />
-    <Compile Include="RqlToMongoFilterDefinition.cs" />
     <Compile Include="SortSpecToSortDefinition.cs" />
+    <Compile Include="RqlToFilterDefinition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

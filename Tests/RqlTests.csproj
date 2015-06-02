@@ -48,13 +48,13 @@
   <ItemGroup>
     <Compile Include="RqlParserTests.cs" />
     <Compile Include="RqlTokenizerTests.cs" />
-    <Compile Include="RqlToMongoQueryCompilerTests.cs" />
     <Compile Include="RqlIdTests.cs" />
-    <Compile Include="SortSpecToMongoSortByCompilerTests.cs" />
     <Compile Include="FieldSpecToMongoFieldsCompilerTests.cs" />
     <Compile Include="RqlDateTimeTests.cs" />
     <Compile Include="RqlTimeSpanTests.cs" />
     <Compile Include="TimeSpanSerializerTests.cs" />
+    <Compile Include="SortSpecToSortDefinitionTests.cs" />
+    <Compile Include="RqlToFilterDefinitionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

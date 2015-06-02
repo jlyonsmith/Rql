@@ -8,7 +8,7 @@ namespace Rql
         private TimeSpan timeSpan;
 
         // See http://en.wikipedia.org/wiki/ISO_8601#Durations
-        public static readonly string FormatPattern = @"'P'd'D''T'hh'H'mm'M'ss'.'fff'S'";
+        public static readonly string FormatPattern = @"'P'd'DT'hh'H'mm'M'ss'.'FFF'S'";
 
         public RqlTimeSpan(TimeSpan timeSpan) : this()
         {
@@ -64,6 +64,11 @@ namespace Rql
         public bool Equals(RqlTimeSpan other)
         {
             return this.timeSpan.Equals(other.timeSpan);
+        }
+
+        public override int GetHashCode()
+        {
+            return timeSpan.GetHashCode();
         }
 
         public override string ToString()

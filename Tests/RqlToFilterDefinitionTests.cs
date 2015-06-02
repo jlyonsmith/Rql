@@ -12,7 +12,7 @@ using System.Reflection;
 namespace Rql.MongoDB.Tests
 {
     [TestFixture()]
-    public class RqlToMongoQueryCompilerTests
+    public class RqlToFilterDefinitionTests
     {
         [Test()]
         public void TestComparisonOps()
@@ -33,7 +33,7 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                var filter = new RqlToMongoFilterDefinition().Compile<BsonDocument>(pair.Rql);
+                var filter = new RqlToFilterDefinition().Compile<BsonDocument>(pair.Rql);
                 var doc = filter as BsonDocumentFilterDefinition<BsonDocument>;
 
                 Assert.NotNull(doc);
@@ -57,7 +57,7 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                var filter = new RqlToMongoFilterDefinition().Compile<BsonDocument>(pair.Rql);
+                var filter = new RqlToFilterDefinition().Compile<BsonDocument>(pair.Rql);
                 var doc = filter as BsonDocumentFilterDefinition<BsonDocument>;
 
                 Assert.NotNull(doc);
@@ -77,7 +77,7 @@ namespace Rql.MongoDB.Tests
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                var filter = new RqlToMongoFilterDefinition().Compile<BsonDocument>(pair.Rql);
+                var filter = new RqlToFilterDefinition().Compile<BsonDocument>(pair.Rql);
                 var doc = filter as BsonDocumentFilterDefinition<BsonDocument>;
 
                 Assert.NotNull(doc);
@@ -96,14 +96,16 @@ namespace Rql.MongoDB.Tests
                 new { Rql = "eq(a,10)", Mongo = "{ \"a\" : 10 }" },
                 new { Rql = "eq(a,10.01)", Mongo = "{ \"a\" : 10.01 }" },
                 new { Rql = "eq(id,$d7X2HQlexQbSmn0B)", Mongo = "{ \"_id\" : ObjectId(\"51d1e6baec98e811b7ee9d20\") }" },
-                new { Rql = "eq(when,@2013-06-24T15:00:00Z)", Mongo = "{ \"when\" : ISODate(\"2013-06-24T15:00:00Z\") }" },
+                new { Rql = "eq(when,@2013-06-24T15:00:00.000Z)", Mongo = "{ \"when\" : ISODate(\"2013-06-24T15:00:00Z\") }" },
+                new { Rql = "eq(when,@2013-06-24T15:00:00.123Z)", Mongo = "{ \"when\" : ISODate(\"2013-06-24T15:00:00.123Z\") }" },
+                new { Rql = "eq(after,~P10DT01H30M00.000S)", Mongo = "{ \"after\" : 869400000 }" },
                 new { Rql = "in(a,(1,2,3))", Mongo = "{ \"a\" : { \"$in\" : [1, 2, 3] } }" },
             };
 
             for (int i = 0; i < pairs.Length; i++)
             {
                 var pair = pairs[i];
-                var filter = new RqlToMongoFilterDefinition().Compile<BsonDocument>(pair.Rql);
+                var filter = new RqlToFilterDefinition().Compile<BsonDocument>(pair.Rql);
                 var doc = filter as BsonDocumentFilterDefinition<BsonDocument>;
 
                 Assert.NotNull(doc);

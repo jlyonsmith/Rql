@@ -131,7 +131,7 @@ namespace Rql
             if (c == '\0')
                 return (stopToken = RqlToken.End(offset));
 
-            if (Char.IsLetter(c))
+            if (Char.IsLetter(c) || c == '_')
             {
                 sb.Clear();
                 sb.Append(c);
@@ -140,7 +140,7 @@ namespace Rql
 
                 bool lastCharWasDot = false;
 
-                while (c != 0 && (Char.IsLetterOrDigit(c)) || c == '.')
+                while (c != 0 && (Char.IsLetterOrDigit(c)) || c == '.' || c == '_')
                 {
                     sb.Append(c);
 

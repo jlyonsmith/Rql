@@ -100,6 +100,17 @@ namespace Rql.Tests
             Assert.IsInstanceOf<RqlExpression>(exp);
             Assert.AreEqual(expressionText, new TestExpressionVisitor(exp).ToString());
         }
+
+
+        [Test]
+        public void TestIdentifierExpressionWithUnderscore()
+        {
+            string expressionText = "and(eq(_xyz,10),gte(xy_z,0),eq(xyz_,true))";
+            RqlExpression exp = new RqlParser().Parse(expressionText);
+
+            Assert.IsInstanceOf<RqlExpression>(exp);
+            Assert.AreEqual(expressionText, new TestExpressionVisitor(exp).ToString());
+        }
     }
 }
 
